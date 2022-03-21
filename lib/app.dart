@@ -47,7 +47,7 @@ class App extends StatelessWidget {
                     final FirebaseAuth _auth = FirebaseAuth.instance;
                     try {
                       _auth.signInAnonymously();
-                      appRouter.popAndPush(const WelcomeRoute());
+                      appRouter.popAndPush(const HomeRoute());
                     } catch (e) {
                       ErrorHint('Unable to anonymously signin: $e');
                     }

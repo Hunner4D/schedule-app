@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:schedule_app/presentation/screens/home/home_screen.dart';
 import 'package:schedule_app/presentation/screens/loading/loading_screen.dart';
-import 'package:schedule_app/presentation/screens/welcome/welcome_screen.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Screen,Route',
@@ -11,11 +10,8 @@ import 'package:schedule_app/presentation/screens/welcome/welcome_screen.dart';
       fullscreenDialog: true,
     ),
     AutoRoute(
-      page: WelcomeScreen,
-      fullscreenDialog: true,
-    ),
-    AutoRoute(
       page: HomeScreen,
+      fullscreenDialog: true,
     ),
   ],
 )
