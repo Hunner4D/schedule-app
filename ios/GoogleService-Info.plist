@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>267420939012-dt89q1d82ibi4dm3bke6hscuovkacduu.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.267420939012-dt89q1d82ibi4dm3bke6hscuovkacduu</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAjQp7bfS193j3_2B7kLAM4RMRQToTCYzs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>267420939012</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.mtgBinder</string>
+	<key>PROJECT_ID</key>
+	<string>mtg-binder-70c51</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mtg-binder-70c51.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:267420939012:ios:e443c41e76b27050aad651</string>
+</dict>
+</plist>
