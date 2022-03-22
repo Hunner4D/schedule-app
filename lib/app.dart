@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schedule_app/logic/bloc/bloc_barrel.dart';
 import 'package:schedule_app/logic/router/app_router.gr.dart';
+import 'package:schedule_app/presentation/constants/colors.dart';
 import 'package:schedule_app/presentation/screens/loading/loading_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +25,7 @@ class App extends StatelessWidget {
           ),
           scaffoldBackgroundColor: themeState.map(
             lightMode: (_) => Colors.white,
-            darkMode: (_) => const Color.fromRGBO(15, 17, 32, 1),
+            darkMode: (_) => primaryColor,
           ),
         ),
         routeInformationParser: appRouter.defaultRouteParser(),
@@ -36,7 +37,7 @@ class App extends StatelessWidget {
               loader: FutureLoader(
                 future: Firebase.initializeApp().then(
                   (value) => Future.delayed(
-                    const Duration(milliseconds: 2500),
+                    const Duration(milliseconds: 1000),
                   ),
                 ),
                 callback: (
