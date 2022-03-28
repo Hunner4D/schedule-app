@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:schedule_app/app.dart';
 import 'package:schedule_app/logic/bloc/bloc_barrel.dart';
+import 'package:schedule_app/logic/bloc/firebase/repository/firebase_repository.dart';
 import 'package:schedule_app/logic/router/app_router.gr.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,6 +22,12 @@ class AppProvider extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (__) => FirebaseBloc(
+            repository: FirebaseRepository(),
+            initialState: const FirebaseBlocState.recieving(),
+          ),
+        ),
         BlocProvider(
           create: (__) => ThemeDataCubit(
             initialState: systemBrightnessSetting,

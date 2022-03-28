@@ -34,9 +34,10 @@ class AppRouter extends _i3.RootStackRouter {
           fullscreenDialog: true);
     },
     HomeRoute.name: (routeData) {
+      final args = routeData.argsAs<HomeRouteArgs>();
       return _i3.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: const _i2.HomeScreen(),
+          child: _i2.HomeScreen(key: args.key, context: args.context),
           fullscreenDialog: true);
     }
   };
@@ -90,8 +91,24 @@ class LoadingRouteArgs {
 
 /// generated route for
 /// [_i2.HomeScreen]
-class HomeRoute extends _i3.PageRouteInfo<void> {
-  const HomeRoute() : super(HomeRoute.name, path: '/home-screen');
+class HomeRoute extends _i3.PageRouteInfo<HomeRouteArgs> {
+  HomeRoute({_i4.Key? key, required _i4.BuildContext context})
+      : super(HomeRoute.name,
+            path: '/home-screen',
+            args: HomeRouteArgs(key: key, context: context));
 
   static const String name = 'HomeRoute';
+}
+
+class HomeRouteArgs {
+  const HomeRouteArgs({this.key, required this.context});
+
+  final _i4.Key? key;
+
+  final _i4.BuildContext context;
+
+  @override
+  String toString() {
+    return 'HomeRouteArgs{key: $key, context: $context}';
+  }
 }

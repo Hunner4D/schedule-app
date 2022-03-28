@@ -24,12 +24,12 @@ class _InputWidgetState extends State<InputWidget> {
   String textValue = "";
   String dropdownValue = "8:00 AM";
 
-  List<DropdownMenuItem<String>> returnDropdownListItems() {
-    List<DropdownMenuItem<String>> items = [];
+  List<PopupMenuEntry<String>> returnDropdownListItems() {
+    List<PopupMenuEntry<String>> items = [];
 
-    for (var time in timesByHalfHour) {
+    for (var time in timesByHour) {
       items.add(
-        DropdownMenuItem(child: Text(time), value: time),
+        PopupMenuItem(child: Text(time), value: time),
       );
     }
 
@@ -79,14 +79,13 @@ class _InputWidgetState extends State<InputWidget> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  DropdownButton(
-                    value: dropdownValue,
-                    items: returnDropdownListItems(),
-                    onChanged: (String? newValue) => setState(() {
+                  PopupMenuButton(
+                    itemBuilder:(context) => returnDropdownListItems(),
+                    onSelected: (String? newValue) => setState(() {
                       dropdownValue = newValue!;
                     }),
-                    underline: const SizedBox(),
-                    icon: Container(
+                    iconSize: 10,
+                    child: Container(
                       decoration: BoxDecoration(
                         color: primaryColor,
                         borderRadius: BorderRadius.circular(5.0),

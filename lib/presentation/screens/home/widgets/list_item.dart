@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:schedule_app/logic/bloc/bloc_barrel.dart';
 import 'package:schedule_app/presentation/constants/colors.dart';
@@ -5,12 +6,53 @@ import 'package:schedule_app/presentation/constants/colors.dart';
 class ListItem extends StatelessWidget {
   final ThemeDataCubitState themeState;
   final String time;
+  final List<String?>? data;
 
   const ListItem({
     Key? key,
     required this.themeState,
     required this.time,
+    this.data,
   }) : super(key: key);
+
+  Widget returnAppointmentsList() {
+    List<Widget> appointments = [];
+
+    if (data != null) {
+      data?.forEach((appointment) {
+        appointments.add(
+          Center(
+            child: Text(appointment!),
+          ),
+        );
+      });
+
+      return Expanded(
+        child: Row(
+          children: [
+            Expanded(
+              child: ListView(
+                children: appointments,
+              ),
+            ),
+            GestureDetector(
+              onTap: () => print('remove'),
+              child: Icon(
+                CupertinoIcons.minus_circle_fill,
+                size: 40,
+                color: themeState.map(
+                  lightMode: (_) => primaryColor,
+                  darkMode: (_) => Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +60,11 @@ class ListItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(time),
+            returnAppointmentsList(),
           ],
         ),
       ),
