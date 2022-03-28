@@ -37,7 +37,7 @@ class App extends StatelessWidget {
               loader: FutureLoader(
                 future: Firebase.initializeApp().then(
                   (value) => Future.delayed(
-                    const Duration(milliseconds: 1000),
+                    const Duration(milliseconds: 5000),
                   ),
                 ),
                 callback: (
