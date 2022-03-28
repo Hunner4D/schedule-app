@@ -6,7 +6,7 @@ This app utilizes Google's Dart framework Flutter, for cross-platfrom mobile dev
 
 The database supporting this app is Firebase Firestore, and uses an anonymous login by a persisted uid handle for each user. From which it GETS, SETS, & PUTS schedule data.
 
-Please note this app will not run without a respoective GoogleService-Info.plist file for Firebase integration.
+Please note this app will not run without a respective GoogleService-Info.plist file for Firebase integration.
 
 The lib/logic folder handles all business logic with the bloc package which acts similiarly to React's Redux
 
