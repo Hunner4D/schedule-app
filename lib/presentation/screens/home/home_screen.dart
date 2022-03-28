@@ -19,15 +19,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late DateTime dateTime;
-  late String dateCode;
+  late DateTime dateTime = DateTime.now();
+  late String dateCode = '${months[dateTime.month - 1]}${dateTime.day}';
 
   @override
   void initState() {
     super.initState();
-    dateTime = DateTime.now();
-    dateCode = '${months[dateTime.month - 1]}${dateTime.day}';
-
     BlocProvider.of<FirebaseBloc>(context).add(
       FirebaseBlocEvent.getUserData(date: dateCode),
     );
@@ -111,6 +108,23 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: dateTime,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != dateTime) {
+      setState(() {
+        dateTime = picked;
+        dateCode = '${months[picked.month - 1]}${picked.day}';
+      });
+      BlocProvider.of<FirebaseBloc>(context).add(
+        FirebaseBlocEvent.getUserData(date: dateCode),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,13 +152,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
-                child: Text(
-                  '${months[dateTime.month - 1]} ${weekdays[dateTime.weekday - 1]} ${dateTime.day}',
-                  style: const TextStyle(
-                    fontFamily: 'Now-Light',
-                    fontSize: 35,
-                    decoration: TextDecoration.underline,
-                    letterSpacing: 3.5,
+                child: GestureDetector(
+                  onTap: () async => await selectDate(context),
+                  child: Text(
+                    '${months[dateTime.month - 1]} ${weekdays[dateTime.weekday - 1]} ${dateTime.day}',
+                    style: const TextStyle(
+                      fontFamily: 'Now-Light',
+                      fontSize: 35,
+                      decoration: TextDecoration.underline,
+                      letterSpacing: 3.5,
+                    ),
                   ),
                 ),
               ),
