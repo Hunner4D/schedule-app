@@ -479,12 +479,27 @@ abstract class _FirebaseBlocStateComplete implements FirebaseBlocState {
 class _$FirebaseBlocEventTearOff {
   const _$FirebaseBlocEventTearOff();
 
-  _FirebaseBlocEventGetUserData getUserData() {
-    return const _FirebaseBlocEventGetUserData();
+  _FirebaseBlocEventGetUserData getUserData({required String date}) {
+    return _FirebaseBlocEventGetUserData(
+      date: date,
+    );
   }
 
-  _FirebaseBlocEventSendUserData sendUserData() {
-    return const _FirebaseBlocEventSendUserData();
+  _FirebaseBlocEventSetUserData setUserData(
+      {required String date, required String time, required String data}) {
+    return _FirebaseBlocEventSetUserData(
+      date: date,
+      time: time,
+      data: data,
+    );
+  }
+
+  _FirebaseBlocEventRemoveUserData removeUserData(
+      {required String date, required String time}) {
+    return _FirebaseBlocEventRemoveUserData(
+      date: date,
+      time: time,
+    );
   }
 }
 
@@ -493,44 +508,57 @@ const $FirebaseBlocEvent = _$FirebaseBlocEventTearOff();
 
 /// @nodoc
 mixin _$FirebaseBlocEvent {
+  String get date => throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() getUserData,
-    required TResult Function() sendUserData,
+    required TResult Function(String date) getUserData,
+    required TResult Function(String date, String time, String data)
+        setUserData,
+    required TResult Function(String date, String time) removeUserData,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? getUserData,
-    TResult Function()? sendUserData,
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setUserData,
+    TResult Function(String date, String time)? removeUserData,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? getUserData,
-    TResult Function()? sendUserData,
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setUserData,
+    TResult Function(String date, String time)? removeUserData,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FirebaseBlocEventGetUserData value) getUserData,
-    required TResult Function(_FirebaseBlocEventSendUserData value)
-        sendUserData,
+    required TResult Function(_FirebaseBlocEventSetUserData value) setUserData,
+    required TResult Function(_FirebaseBlocEventRemoveUserData value)
+        removeUserData,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSendUserData value)? sendUserData,
+    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
+    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSendUserData value)? sendUserData,
+    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
+    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
     required TResult orElse(),
   }) =>
+      throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $FirebaseBlocEventCopyWith<FirebaseBlocEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -539,6 +567,7 @@ abstract class $FirebaseBlocEventCopyWith<$Res> {
   factory $FirebaseBlocEventCopyWith(
           FirebaseBlocEvent value, $Res Function(FirebaseBlocEvent) then) =
       _$FirebaseBlocEventCopyWithImpl<$Res>;
+  $Res call({String date});
 }
 
 /// @nodoc
@@ -549,14 +578,29 @@ class _$FirebaseBlocEventCopyWithImpl<$Res>
   final FirebaseBlocEvent _value;
   // ignore: unused_field
   final $Res Function(FirebaseBlocEvent) _then;
+
+  @override
+  $Res call({
+    Object? date = freezed,
+  }) {
+    return _then(_value.copyWith(
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
-abstract class _$FirebaseBlocEventGetUserDataCopyWith<$Res> {
+abstract class _$FirebaseBlocEventGetUserDataCopyWith<$Res>
+    implements $FirebaseBlocEventCopyWith<$Res> {
   factory _$FirebaseBlocEventGetUserDataCopyWith(
           _FirebaseBlocEventGetUserData value,
           $Res Function(_FirebaseBlocEventGetUserData) then) =
       __$FirebaseBlocEventGetUserDataCopyWithImpl<$Res>;
+  @override
+  $Res call({String date});
 }
 
 /// @nodoc
@@ -571,55 +615,82 @@ class __$FirebaseBlocEventGetUserDataCopyWithImpl<$Res>
   @override
   _FirebaseBlocEventGetUserData get _value =>
       super._value as _FirebaseBlocEventGetUserData;
+
+  @override
+  $Res call({
+    Object? date = freezed,
+  }) {
+    return _then(_FirebaseBlocEventGetUserData(
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
-  const _$_FirebaseBlocEventGetUserData();
+  const _$_FirebaseBlocEventGetUserData({required this.date});
+
+  @override
+  final String date;
 
   @override
   String toString() {
-    return 'FirebaseBlocEvent.getUserData()';
+    return 'FirebaseBlocEvent.getUserData(date: $date)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _FirebaseBlocEventGetUserData);
+            other is _FirebaseBlocEventGetUserData &&
+            const DeepCollectionEquality().equals(other.date, date));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(date));
+
+  @JsonKey(ignore: true)
+  @override
+  _$FirebaseBlocEventGetUserDataCopyWith<_FirebaseBlocEventGetUserData>
+      get copyWith => __$FirebaseBlocEventGetUserDataCopyWithImpl<
+          _FirebaseBlocEventGetUserData>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() getUserData,
-    required TResult Function() sendUserData,
+    required TResult Function(String date) getUserData,
+    required TResult Function(String date, String time, String data)
+        setUserData,
+    required TResult Function(String date, String time) removeUserData,
   }) {
-    return getUserData();
+    return getUserData(date);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? getUserData,
-    TResult Function()? sendUserData,
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setUserData,
+    TResult Function(String date, String time)? removeUserData,
   }) {
-    return getUserData?.call();
+    return getUserData?.call(date);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? getUserData,
-    TResult Function()? sendUserData,
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setUserData,
+    TResult Function(String date, String time)? removeUserData,
     required TResult orElse(),
   }) {
     if (getUserData != null) {
-      return getUserData();
+      return getUserData(date);
     }
     return orElse();
   }
@@ -628,8 +699,9 @@ class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FirebaseBlocEventGetUserData value) getUserData,
-    required TResult Function(_FirebaseBlocEventSendUserData value)
-        sendUserData,
+    required TResult Function(_FirebaseBlocEventSetUserData value) setUserData,
+    required TResult Function(_FirebaseBlocEventRemoveUserData value)
+        removeUserData,
   }) {
     return getUserData(this);
   }
@@ -638,7 +710,8 @@ class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSendUserData value)? sendUserData,
+    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
+    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
   }) {
     return getUserData?.call(this);
   }
@@ -647,7 +720,8 @@ class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSendUserData value)? sendUserData,
+    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
+    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
     required TResult orElse(),
   }) {
     if (getUserData != null) {
@@ -658,80 +732,136 @@ class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
 }
 
 abstract class _FirebaseBlocEventGetUserData implements FirebaseBlocEvent {
-  const factory _FirebaseBlocEventGetUserData() =
+  const factory _FirebaseBlocEventGetUserData({required String date}) =
       _$_FirebaseBlocEventGetUserData;
-}
-
-/// @nodoc
-abstract class _$FirebaseBlocEventSendUserDataCopyWith<$Res> {
-  factory _$FirebaseBlocEventSendUserDataCopyWith(
-          _FirebaseBlocEventSendUserData value,
-          $Res Function(_FirebaseBlocEventSendUserData) then) =
-      __$FirebaseBlocEventSendUserDataCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$FirebaseBlocEventSendUserDataCopyWithImpl<$Res>
-    extends _$FirebaseBlocEventCopyWithImpl<$Res>
-    implements _$FirebaseBlocEventSendUserDataCopyWith<$Res> {
-  __$FirebaseBlocEventSendUserDataCopyWithImpl(
-      _FirebaseBlocEventSendUserData _value,
-      $Res Function(_FirebaseBlocEventSendUserData) _then)
-      : super(_value, (v) => _then(v as _FirebaseBlocEventSendUserData));
 
   @override
-  _FirebaseBlocEventSendUserData get _value =>
-      super._value as _FirebaseBlocEventSendUserData;
+  String get date;
+  @override
+  @JsonKey(ignore: true)
+  _$FirebaseBlocEventGetUserDataCopyWith<_FirebaseBlocEventGetUserData>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$FirebaseBlocEventSetUserDataCopyWith<$Res>
+    implements $FirebaseBlocEventCopyWith<$Res> {
+  factory _$FirebaseBlocEventSetUserDataCopyWith(
+          _FirebaseBlocEventSetUserData value,
+          $Res Function(_FirebaseBlocEventSetUserData) then) =
+      __$FirebaseBlocEventSetUserDataCopyWithImpl<$Res>;
+  @override
+  $Res call({String date, String time, String data});
+}
+
+/// @nodoc
+class __$FirebaseBlocEventSetUserDataCopyWithImpl<$Res>
+    extends _$FirebaseBlocEventCopyWithImpl<$Res>
+    implements _$FirebaseBlocEventSetUserDataCopyWith<$Res> {
+  __$FirebaseBlocEventSetUserDataCopyWithImpl(
+      _FirebaseBlocEventSetUserData _value,
+      $Res Function(_FirebaseBlocEventSetUserData) _then)
+      : super(_value, (v) => _then(v as _FirebaseBlocEventSetUserData));
+
+  @override
+  _FirebaseBlocEventSetUserData get _value =>
+      super._value as _FirebaseBlocEventSetUserData;
+
+  @override
+  $Res call({
+    Object? date = freezed,
+    Object? time = freezed,
+    Object? data = freezed,
+  }) {
+    return _then(_FirebaseBlocEventSetUserData(
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      time: time == freezed
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
+      data: data == freezed
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 
-class _$_FirebaseBlocEventSendUserData
-    implements _FirebaseBlocEventSendUserData {
-  const _$_FirebaseBlocEventSendUserData();
+class _$_FirebaseBlocEventSetUserData implements _FirebaseBlocEventSetUserData {
+  const _$_FirebaseBlocEventSetUserData(
+      {required this.date, required this.time, required this.data});
+
+  @override
+  final String date;
+  @override
+  final String time;
+  @override
+  final String data;
 
   @override
   String toString() {
-    return 'FirebaseBlocEvent.sendUserData()';
+    return 'FirebaseBlocEvent.setUserData(date: $date, time: $time, data: $data)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _FirebaseBlocEventSendUserData);
+            other is _FirebaseBlocEventSetUserData &&
+            const DeepCollectionEquality().equals(other.date, date) &&
+            const DeepCollectionEquality().equals(other.time, time) &&
+            const DeepCollectionEquality().equals(other.data, data));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(date),
+      const DeepCollectionEquality().hash(time),
+      const DeepCollectionEquality().hash(data));
+
+  @JsonKey(ignore: true)
+  @override
+  _$FirebaseBlocEventSetUserDataCopyWith<_FirebaseBlocEventSetUserData>
+      get copyWith => __$FirebaseBlocEventSetUserDataCopyWithImpl<
+          _FirebaseBlocEventSetUserData>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() getUserData,
-    required TResult Function() sendUserData,
+    required TResult Function(String date) getUserData,
+    required TResult Function(String date, String time, String data)
+        setUserData,
+    required TResult Function(String date, String time) removeUserData,
   }) {
-    return sendUserData();
+    return setUserData(date, time, data);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? getUserData,
-    TResult Function()? sendUserData,
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setUserData,
+    TResult Function(String date, String time)? removeUserData,
   }) {
-    return sendUserData?.call();
+    return setUserData?.call(date, time, data);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? getUserData,
-    TResult Function()? sendUserData,
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setUserData,
+    TResult Function(String date, String time)? removeUserData,
     required TResult orElse(),
   }) {
-    if (sendUserData != null) {
-      return sendUserData();
+    if (setUserData != null) {
+      return setUserData(date, time, data);
     }
     return orElse();
   }
@@ -740,36 +870,215 @@ class _$_FirebaseBlocEventSendUserData
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FirebaseBlocEventGetUserData value) getUserData,
-    required TResult Function(_FirebaseBlocEventSendUserData value)
-        sendUserData,
+    required TResult Function(_FirebaseBlocEventSetUserData value) setUserData,
+    required TResult Function(_FirebaseBlocEventRemoveUserData value)
+        removeUserData,
   }) {
-    return sendUserData(this);
+    return setUserData(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSendUserData value)? sendUserData,
+    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
+    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
   }) {
-    return sendUserData?.call(this);
+    return setUserData?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSendUserData value)? sendUserData,
+    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
+    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
     required TResult orElse(),
   }) {
-    if (sendUserData != null) {
-      return sendUserData(this);
+    if (setUserData != null) {
+      return setUserData(this);
     }
     return orElse();
   }
 }
 
-abstract class _FirebaseBlocEventSendUserData implements FirebaseBlocEvent {
-  const factory _FirebaseBlocEventSendUserData() =
-      _$_FirebaseBlocEventSendUserData;
+abstract class _FirebaseBlocEventSetUserData implements FirebaseBlocEvent {
+  const factory _FirebaseBlocEventSetUserData(
+      {required String date,
+      required String time,
+      required String data}) = _$_FirebaseBlocEventSetUserData;
+
+  @override
+  String get date;
+  String get time;
+  String get data;
+  @override
+  @JsonKey(ignore: true)
+  _$FirebaseBlocEventSetUserDataCopyWith<_FirebaseBlocEventSetUserData>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$FirebaseBlocEventRemoveUserDataCopyWith<$Res>
+    implements $FirebaseBlocEventCopyWith<$Res> {
+  factory _$FirebaseBlocEventRemoveUserDataCopyWith(
+          _FirebaseBlocEventRemoveUserData value,
+          $Res Function(_FirebaseBlocEventRemoveUserData) then) =
+      __$FirebaseBlocEventRemoveUserDataCopyWithImpl<$Res>;
+  @override
+  $Res call({String date, String time});
+}
+
+/// @nodoc
+class __$FirebaseBlocEventRemoveUserDataCopyWithImpl<$Res>
+    extends _$FirebaseBlocEventCopyWithImpl<$Res>
+    implements _$FirebaseBlocEventRemoveUserDataCopyWith<$Res> {
+  __$FirebaseBlocEventRemoveUserDataCopyWithImpl(
+      _FirebaseBlocEventRemoveUserData _value,
+      $Res Function(_FirebaseBlocEventRemoveUserData) _then)
+      : super(_value, (v) => _then(v as _FirebaseBlocEventRemoveUserData));
+
+  @override
+  _FirebaseBlocEventRemoveUserData get _value =>
+      super._value as _FirebaseBlocEventRemoveUserData;
+
+  @override
+  $Res call({
+    Object? date = freezed,
+    Object? time = freezed,
+  }) {
+    return _then(_FirebaseBlocEventRemoveUserData(
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      time: time == freezed
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_FirebaseBlocEventRemoveUserData
+    implements _FirebaseBlocEventRemoveUserData {
+  const _$_FirebaseBlocEventRemoveUserData(
+      {required this.date, required this.time});
+
+  @override
+  final String date;
+  @override
+  final String time;
+
+  @override
+  String toString() {
+    return 'FirebaseBlocEvent.removeUserData(date: $date, time: $time)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _FirebaseBlocEventRemoveUserData &&
+            const DeepCollectionEquality().equals(other.date, date) &&
+            const DeepCollectionEquality().equals(other.time, time));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(date),
+      const DeepCollectionEquality().hash(time));
+
+  @JsonKey(ignore: true)
+  @override
+  _$FirebaseBlocEventRemoveUserDataCopyWith<_FirebaseBlocEventRemoveUserData>
+      get copyWith => __$FirebaseBlocEventRemoveUserDataCopyWithImpl<
+          _FirebaseBlocEventRemoveUserData>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String date) getUserData,
+    required TResult Function(String date, String time, String data)
+        setUserData,
+    required TResult Function(String date, String time) removeUserData,
+  }) {
+    return removeUserData(date, time);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setUserData,
+    TResult Function(String date, String time)? removeUserData,
+  }) {
+    return removeUserData?.call(date, time);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setUserData,
+    TResult Function(String date, String time)? removeUserData,
+    required TResult orElse(),
+  }) {
+    if (removeUserData != null) {
+      return removeUserData(date, time);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FirebaseBlocEventGetUserData value) getUserData,
+    required TResult Function(_FirebaseBlocEventSetUserData value) setUserData,
+    required TResult Function(_FirebaseBlocEventRemoveUserData value)
+        removeUserData,
+  }) {
+    return removeUserData(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
+    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
+    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
+  }) {
+    return removeUserData?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
+    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
+    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
+    required TResult orElse(),
+  }) {
+    if (removeUserData != null) {
+      return removeUserData(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _FirebaseBlocEventRemoveUserData implements FirebaseBlocEvent {
+  const factory _FirebaseBlocEventRemoveUserData(
+      {required String date,
+      required String time}) = _$_FirebaseBlocEventRemoveUserData;
+
+  @override
+  String get date;
+  String get time;
+  @override
+  @JsonKey(ignore: true)
+  _$FirebaseBlocEventRemoveUserDataCopyWith<_FirebaseBlocEventRemoveUserData>
+      get copyWith => throw _privateConstructorUsedError;
 }

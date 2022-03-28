@@ -7,12 +7,14 @@ class ListItem extends StatelessWidget {
   final ThemeDataCubitState themeState;
   final String time;
   final List<String?>? data;
+  final Function(String time) onRemove;
 
   const ListItem({
     Key? key,
     required this.themeState,
     required this.time,
     this.data,
+    required this.onRemove,
   }) : super(key: key);
 
   Widget returnAppointmentsList() {
@@ -36,7 +38,7 @@ class ListItem extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () => print('remove'),
+              onTap: () => onRemove(time),
               child: Icon(
                 CupertinoIcons.minus_circle_fill,
                 size: 40,

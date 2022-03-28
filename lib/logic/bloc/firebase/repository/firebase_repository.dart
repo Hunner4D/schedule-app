@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:schedule_app/logic/models/appointment.dart';
 
 class FirebaseRepository {
-  Future<List<Appointment?>> getUserAppointments() async {
+  // GET APPOINTMENTS
+  Future<List<Appointment?>> getUserAppointments({required String date}) async {
     try {
       final _auth = FirebaseAuth.instance;
       final _firestore = FirebaseFirestore.instance;
@@ -15,12 +16,20 @@ class FirebaseRepository {
             .get()
             .then((event) {
           if (event.docs.isNotEmpty) {
-            Map<String, dynamic> documentData = event.docs.single.data();
+            var documentData = event.docs.single.data();
+            Map appointmentsData = documentData['appointments'];
+            Map dateData = appointmentsData[date];
+
             List<Appointment?> appointments = [];
-            List appointmentsData = documentData['appointments'] as List;
-            for (var appointment in appointmentsData) {
-              appointments.add(Appointment.fromMap(appointment));
+            for (var element in dateData.keys) {
+              appointments.add(
+                Appointment(
+                  time: element,
+                  data: List.from(dateData[element]!),
+                ),
+              );
             }
+
             return appointments;
           } else {
             List<Appointment?> appointments = [];
@@ -35,40 +44,102 @@ class FirebaseRepository {
     } catch (e) {
       List<Appointment?> appointments = [];
       return appointments;
-    } 
+    }
     throw Error();
   }
 
-  Future<List<Appointment?>> setUserAppointments() async {
+  // SET APPOINTMENTS
+  Future<void> setUserAppointments({
+    required String date,
+    required String time,
+    required String data,
+  }) async {
     try {
       final _auth = FirebaseAuth.instance;
       final _firestore = FirebaseFirestore.instance;
       final user = _auth.currentUser;
       if (user != null) {
-        return await _firestore
+        await _firestore
             .collection("usersCollection")
             .where("uid", isEqualTo: user.uid)
             .get()
             .then((event) {
           if (event.docs.isNotEmpty) {
-            // Map<String, dynamic> documentData = event.docs.single.data();
-            // return Appointment.fromMap(documentData);
-            List<Appointment?> appointments = [];
-            return appointments;
+            var document = event.docs.single;
+            var documentData = document.data();
+            Map appointmentsData = documentData['appointments'];
+            Map dateData = appointmentsData[date];
+
+            List<String> previousData = [];
+            if (dateData.keys.contains(time)) {
+              previousData = List.from(dateData[time]!);
+              _firestore.collection("usersCollection").doc(document.id).set({
+                "appointments": {
+                  date: {
+                    time: [data, ...previousData]
+                  }
+                }
+              }, SetOptions(merge: true));
+            } else {
+              _firestore.collection("usersCollection").doc(document.id).set({
+                "appointments": {
+                  date: {
+                    time: [data]
+                  }
+                }
+              }, SetOptions(merge: true));
+            }
           } else {
-            List<Appointment?> appointments = [];
-            return appointments;
+            _firestore.collection("usersCollection").add({
+              "uid": user.uid,
+              "appointments": {
+                date: {
+                  time: [data]
+                }
+              }
+            });
           }
-        }).catchError((err) {
-          print(err);
-          List<Appointment?> appointments = [];
-          return appointments;
         });
       }
-    } catch (e) {
-      List<Appointment?> appointments = [];
-      return appointments;
-    } 
-    throw Error();
+    } catch (err) {
+      print(err);
+      return;
+    }
+  }
+
+  // REMOVE APPOINTMENTS
+  Future<void> removeUserAppointments({
+    required String date,
+    required String time,
+  }) async {
+    try {
+      final _auth = FirebaseAuth.instance;
+      final _firestore = FirebaseFirestore.instance;
+      final user = _auth.currentUser;
+      if (user != null) {
+        await _firestore
+            .collection("usersCollection")
+            .where("uid", isEqualTo: user.uid)
+            .get()
+            .then((event) {
+          if (event.docs.isNotEmpty) {
+            var document = event.docs.single;
+            var documentData = document.data();
+            Map appointmentsData = documentData['appointments'];
+            Map dateData = appointmentsData[date];
+            dateData.remove(time);
+
+            _firestore.collection("usersCollection").doc(document.id).update({
+              "appointments": {
+                date: dateData,
+              }
+            });
+          }
+        });
+      }
+    } catch (err) {
+      print(err);
+      return;
+    }
   }
 }

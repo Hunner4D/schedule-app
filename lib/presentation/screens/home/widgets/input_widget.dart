@@ -5,10 +5,10 @@ import 'package:schedule_app/presentation/constants/colors.dart';
 
 class InputWidget extends StatefulWidget {
   final bool darkmode;
-  final Function(
-    String text,
-    String time,
-  ) onSubmit;
+  final Function({
+    required String text,
+    required String time,
+  }) onSubmit;
 
   const InputWidget({
     Key? key,
@@ -80,7 +80,7 @@ class _InputWidgetState extends State<InputWidget> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   PopupMenuButton(
-                    itemBuilder:(context) => returnDropdownListItems(),
+                    itemBuilder: (context) => returnDropdownListItems(),
                     onSelected: (String? newValue) => setState(() {
                       dropdownValue = newValue!;
                     }),
@@ -102,7 +102,10 @@ class _InputWidgetState extends State<InputWidget> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => widget.onSubmit(textValue, dropdownValue),
+                    onTap: () => widget.onSubmit(
+                      time: dropdownValue,
+                      text: textValue,
+                    ),
                     child: const Icon(
                       CupertinoIcons.add_circled_solid,
                       size: 40,

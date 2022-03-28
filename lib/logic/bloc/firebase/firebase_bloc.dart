@@ -21,7 +21,7 @@ class FirebaseBloc extends Bloc<FirebaseBlocEvent, FirebaseBlocState> {
 
       try {
         //TODO: repo stuff
-        await repository.getUserAppointments().then(
+        await repository.getUserAppointments(date: event.date).then(
               (value) => emit(
                 FirebaseBlocState.complete(appointments: value),
               ),
@@ -35,13 +35,46 @@ class FirebaseBloc extends Bloc<FirebaseBlocEvent, FirebaseBlocState> {
       }
     });
 
-    // SEND USER DATA
-    on<_FirebaseBlocEventSendUserData>((event, emit) async {
+    // SET USER DATA
+    on<_FirebaseBlocEventSetUserData>((event, emit) async {
       emit(const FirebaseBlocState.sending());
 
       try {
-        //TODO: repo stuff
+        await repository
+            .setUserAppointments(
+              date: event.date,
+              time: event.time,
+              data: event.data,
+            )
+            .then((_) => repository
+                .getUserAppointments(date: event.date)
+                .then((value) => emit(
+                      FirebaseBlocState.complete(appointments: value),
+                    )));
+      } catch (e) {
+        emit(
+          const FirebaseBlocState.complete(
+            appointments: [],
+          ),
+        );
+      }
+    });
 
+    // REMOVE USER DATA
+    on<_FirebaseBlocEventRemoveUserData>((event, emit) async {
+      emit(const FirebaseBlocState.sending());
+
+      try {
+        await repository
+            .removeUserAppointments(
+              date: event.date,
+              time: event.time,
+            )
+            .then((_) => repository
+                .getUserAppointments(date: event.date)
+                .then((value) => emit(
+                      FirebaseBlocState.complete(appointments: value),
+                    )));
       } catch (e) {
         emit(
           const FirebaseBlocState.complete(

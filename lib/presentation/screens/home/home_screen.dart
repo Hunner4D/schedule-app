@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_app/logic/bloc/bloc_barrel.dart';
 import 'package:schedule_app/logic/constants/date_time.dart';
+import 'package:schedule_app/logic/models/appointment.dart';
 import 'package:schedule_app/presentation/screens/home/widgets/input_widget.dart';
 import 'package:schedule_app/presentation/screens/home/widgets/list_item.dart';
 
@@ -19,15 +20,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late DateTime dateTime;
+  late String dateCode;
 
   @override
   void initState() {
     super.initState();
-
     dateTime = DateTime.now();
+    dateCode = '${months[dateTime.month - 1]}${dateTime.day}';
 
     BlocProvider.of<FirebaseBloc>(context).add(
-      const FirebaseBlocEvent.getUserData(),
+      FirebaseBlocEvent.getUserData(date: dateCode),
     );
   }
 
@@ -42,24 +44,30 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 30,
           ),
         ];
-
-        for (var time in timesByHour) {
-          for (var appointment in completeState.appointments) {
-            if (appointment?.time == time) {
-              items.add(
-                ListItem(
-                  themeState: themeState,
-                  time: time,
-                  data: appointment?.data,
-                ),
-              );
-            }
-          }
-          items.add(
-            ListItem(themeState: themeState, time: time),
-          );
+        Map<String, Appointment> scheduledTimes = {};
+        for (var appointment in completeState.appointments) {
+          scheduledTimes.addAll({appointment!.time: appointment});
         }
-
+        for (var time in timesByHour) {
+          if (scheduledTimes.keys.contains(time)) {
+            items.add(
+              ListItem(
+                themeState: themeState,
+                time: time,
+                data: scheduledTimes[time]!.data,
+                onRemove: removeAppointment,
+              ),
+            );
+          } else {
+            items.add(
+              ListItem(
+                themeState: themeState,
+                time: time,
+                onRemove: removeAppointment,
+              ),
+            );
+          }
+        }
         return items;
       },
       orElse: () {
@@ -73,6 +81,33 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ];
       },
+    );
+  }
+
+  submitAppointment({
+    required String time,
+    required String text,
+  }) {
+    final blankInput = RegExp(r'^$');
+    if (!blankInput.hasMatch(text) && text.isNotEmpty) {
+      BlocProvider.of<FirebaseBloc>(context).add(
+        FirebaseBlocEvent.setUserData(
+          date: dateCode,
+          time: time,
+          data: text,
+        ),
+      );
+    }
+  }
+
+  removeAppointment(
+    String time,
+  ) {
+    BlocProvider.of<FirebaseBloc>(context).add(
+      FirebaseBlocEvent.removeUserData(
+        date: dateCode,
+        time: time,
+      ),
     );
   }
 
@@ -93,13 +128,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: themeState.map(
                   lightMode: (_) => InputWidget(
                     darkmode: false,
-                    onSubmit: (textValue, timeValue) =>
-                        print('submit: $textValue, $timeValue'),
+                    onSubmit: submitAppointment,
                   ),
                   darkMode: (_) => InputWidget(
                     darkmode: true,
-                    onSubmit: (textValue, timeValue) =>
-                        print('submit: $textValue, $timeValue'),
+                    onSubmit: submitAppointment,
                   ),
                 ),
               ),
