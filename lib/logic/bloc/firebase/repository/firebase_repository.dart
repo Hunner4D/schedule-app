@@ -16,9 +16,10 @@ class FirebaseRepository {
             .get()
             .then((event) {
           if (event.docs.isNotEmpty) {
-            var documentData = event.docs.single.data();
-            Map appointmentsData = documentData['appointments'];
-            Map dateData = appointmentsData[date];
+            var document = event.docs.single;
+            Map<String, dynamic> documentData = document.data();
+            Map<String, dynamic> appointmentsData = documentData['appointments'] ?? {};
+            Map<String, dynamic> dateData = appointmentsData[date] != null ? appointmentsData[date] as Map<String, dynamic> : {};
 
             List<Appointment?> appointments = [];
             for (var element in dateData.keys) {
@@ -66,10 +67,10 @@ class FirebaseRepository {
             .then((event) {
           if (event.docs.isNotEmpty) {
             var document = event.docs.single;
-            var documentData = document.data();
-            Map appointmentsData = documentData['appointments'];
-            Map dateData = appointmentsData[date];
-
+            Map<String, dynamic> documentData = document.data();
+            Map<String, dynamic> appointmentsData = documentData['appointments'] ?? {};
+            Map<String, dynamic> dateData = appointmentsData[date] != null ? appointmentsData[date] as Map<String, dynamic> : {};
+            
             List<String> previousData = [];
             if (dateData.keys.contains(time)) {
               previousData = List.from(dateData[time]!);
@@ -124,15 +125,15 @@ class FirebaseRepository {
             .then((event) {
           if (event.docs.isNotEmpty) {
             var document = event.docs.single;
-            var documentData = document.data();
-            Map appointmentsData = documentData['appointments'];
-            Map dateData = appointmentsData[date];
+            Map<String, dynamic> documentData = document.data();
+            Map<String, dynamic> appointmentsData = documentData['appointments'] ?? {};
+            Map<String, dynamic> dateData = appointmentsData[date] != null ? appointmentsData[date] as Map<String, dynamic> : {};
+
             dateData.remove(time);
+            appointmentsData.update(date, (value) => dateData);
 
             _firestore.collection("usersCollection").doc(document.id).update({
-              "appointments": {
-                date: dateData,
-              }
+              "appointments": appointmentsData,
             });
           }
         });
