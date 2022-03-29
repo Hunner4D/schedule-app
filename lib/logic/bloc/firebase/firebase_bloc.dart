@@ -20,7 +20,6 @@ class FirebaseBloc extends Bloc<FirebaseBlocEvent, FirebaseBlocState> {
       emit(const FirebaseBlocState.recieving());
 
       try {
-        //TODO: repo stuff
         await repository.getUserAppointments(date: event.date).then(
               (value) => emit(
                 FirebaseBlocState.complete(appointments: value),

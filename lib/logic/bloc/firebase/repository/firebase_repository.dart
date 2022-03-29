@@ -18,8 +18,11 @@ class FirebaseRepository {
           if (event.docs.isNotEmpty) {
             var document = event.docs.single;
             Map<String, dynamic> documentData = document.data();
-            Map<String, dynamic> appointmentsData = documentData['appointments'] ?? {};
-            Map<String, dynamic> dateData = appointmentsData[date] != null ? appointmentsData[date] as Map<String, dynamic> : {};
+            Map<String, dynamic> appointmentsData =
+                documentData['appointments'] ?? {};
+            Map<String, dynamic> dateData = appointmentsData[date] != null
+                ? appointmentsData[date] as Map<String, dynamic>
+                : {};
 
             List<Appointment?> appointments = [];
             for (var element in dateData.keys) {
@@ -37,7 +40,6 @@ class FirebaseRepository {
             return appointments;
           }
         }).catchError((err) {
-          print(err);
           List<Appointment?> appointments = [];
           return appointments;
         });
@@ -68,16 +70,22 @@ class FirebaseRepository {
           if (event.docs.isNotEmpty) {
             var document = event.docs.single;
             Map<String, dynamic> documentData = document.data();
-            Map<String, dynamic> appointmentsData = documentData['appointments'] ?? {};
-            Map<String, dynamic> dateData = appointmentsData[date] != null ? appointmentsData[date] as Map<String, dynamic> : {};
-            
+            Map<String, dynamic> appointmentsData =
+                documentData['appointments'] ?? {};
+            Map<String, dynamic> dateData = appointmentsData[date] != null
+                ? appointmentsData[date] as Map<String, dynamic>
+                : {};
+
             List<String> previousData = [];
             if (dateData.keys.contains(time)) {
               previousData = List.from(dateData[time]!);
               _firestore.collection("usersCollection").doc(document.id).set({
                 "appointments": {
                   date: {
-                    time: [data, ...previousData]
+                    time: [
+                      ...previousData,
+                      data,
+                    ]
                   }
                 }
               }, SetOptions(merge: true));
@@ -103,7 +111,6 @@ class FirebaseRepository {
         });
       }
     } catch (err) {
-      print(err);
       return;
     }
   }
@@ -126,8 +133,11 @@ class FirebaseRepository {
           if (event.docs.isNotEmpty) {
             var document = event.docs.single;
             Map<String, dynamic> documentData = document.data();
-            Map<String, dynamic> appointmentsData = documentData['appointments'] ?? {};
-            Map<String, dynamic> dateData = appointmentsData[date] != null ? appointmentsData[date] as Map<String, dynamic> : {};
+            Map<String, dynamic> appointmentsData =
+                documentData['appointments'] ?? {};
+            Map<String, dynamic> dateData = appointmentsData[date] != null
+                ? appointmentsData[date] as Map<String, dynamic>
+                : {};
 
             dateData.remove(time);
             appointmentsData.update(date, (value) => dateData);
@@ -139,7 +149,6 @@ class FirebaseRepository {
         });
       }
     } catch (err) {
-      print(err);
       return;
     }
   }
