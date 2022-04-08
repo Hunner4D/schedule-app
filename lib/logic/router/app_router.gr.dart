@@ -11,6 +11,7 @@
 // ignore_for_file: type=lint
 
 import 'package:auto_route/auto_route.dart' as _i3;
+import 'package:flutter/cupertino.dart' as _i5;
 import 'package:flutter/material.dart' as _i4;
 
 import '../../presentation/screens/home/home_screen.dart' as _i2;
@@ -53,8 +54,8 @@ class AppRouter extends _i3.RootStackRouter {
 /// [_i1.LoadingScreen]
 class LoadingRoute extends _i3.PageRouteInfo<LoadingRouteArgs> {
   LoadingRoute(
-      {_i4.Key? key,
-      required _i4.BuildContext context,
+      {_i5.Key? key,
+      required _i5.BuildContext context,
       required _i1.LoadingType loader,
       bool isInitialLoad = false})
       : super(LoadingRoute.name,
@@ -75,9 +76,9 @@ class LoadingRouteArgs {
       required this.loader,
       this.isInitialLoad = false});
 
-  final _i4.Key? key;
+  final _i5.Key? key;
 
-  final _i4.BuildContext context;
+  final _i5.BuildContext context;
 
   final _i1.LoadingType loader;
 
@@ -92,7 +93,7 @@ class LoadingRouteArgs {
 /// generated route for
 /// [_i2.HomeScreen]
 class HomeRoute extends _i3.PageRouteInfo<HomeRouteArgs> {
-  HomeRoute({_i4.Key? key, required _i4.BuildContext context})
+  HomeRoute({_i5.Key? key, required _i5.BuildContext context})
       : super(HomeRoute.name,
             path: '/home-screen',
             args: HomeRouteArgs(key: key, context: context));
@@ -103,9 +104,9 @@ class HomeRoute extends _i3.PageRouteInfo<HomeRouteArgs> {
 class HomeRouteArgs {
   const HomeRouteArgs({this.key, required this.context});
 
-  final _i4.Key? key;
+  final _i5.Key? key;
 
-  final _i4.BuildContext context;
+  final _i5.BuildContext context;
 
   @override
   String toString() {

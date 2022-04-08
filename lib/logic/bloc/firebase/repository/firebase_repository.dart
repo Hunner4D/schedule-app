@@ -1,10 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:schedule_app/logic/models/appointment.dart';
+import 'package:schedule_app/logic/models/checklist_item.dart';
+
+enum ResponseType { appointments, checklistItems }
 
 class FirebaseRepository {
   // GET APPOINTMENTS
-  Future<List<Appointment?>> getUserAppointments({required String date}) async {
+  Future<Map<ResponseType, List>> getUserAppointments(
+      {required String date}) async {
+    Map<ResponseType, List> response = {
+      ResponseType.appointments: [],
+      ResponseType.checklistItems: [],
+    };
+
     try {
       final _auth = FirebaseAuth.instance;
       final _firestore = FirebaseFirestore.instance;
@@ -24,6 +33,8 @@ class FirebaseRepository {
                 ? appointmentsData[date] as Map<String, dynamic>
                 : {};
 
+            List checklistData = documentData['checklist'] ?? [];
+
             List<Appointment?> appointments = [];
             for (var element in dateData.keys) {
               appointments.add(
@@ -34,19 +45,16 @@ class FirebaseRepository {
               );
             }
 
-            return appointments;
+            response[ResponseType.appointments] = appointments;
+
+            return response;
           } else {
-            List<Appointment?> appointments = [];
-            return appointments;
+            return response;
           }
-        }).catchError((err) {
-          List<Appointment?> appointments = [];
-          return appointments;
-        });
+        }).catchError((err) => response);
       }
     } catch (e) {
-      List<Appointment?> appointments = [];
-      return appointments;
+      return response;
     }
     throw Error();
   }

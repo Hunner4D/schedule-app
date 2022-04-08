@@ -24,7 +24,12 @@ class ListItem extends StatelessWidget {
       data?.forEach((appointment) {
         appointments.add(
           Center(
-            child: Text(appointment!),
+            child: Text(
+              appointment!,
+              style: const TextStyle(
+                fontSize: 17.5,
+              ),
+            ),
           ),
         );
       });
@@ -33,8 +38,11 @@ class ListItem extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: ListView(
-                children: appointments,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: ListView(
+                  children: appointments,
+                ),
               ),
             ),
             GestureDetector(

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:schedule_app/logic/models/appointment.dart';
+import 'package:schedule_app/logic/models/checklist_item.dart';
 
 import 'repository/firebase_repository.dart';
 
@@ -22,13 +23,19 @@ class FirebaseBloc extends Bloc<FirebaseBlocEvent, FirebaseBlocState> {
       try {
         await repository.getUserAppointments(date: event.date).then(
               (value) => emit(
-                FirebaseBlocState.complete(appointments: value),
+                FirebaseBlocState.complete(
+                  appointments: List<Appointment?>.from(
+                      value[ResponseType.appointments]!),
+                  checklistItems: List<ChecklistItem?>.from(
+                      value[ResponseType.checklistItems]!),
+                ),
               ),
             );
       } catch (e) {
         emit(
           const FirebaseBlocState.complete(
             appointments: [],
+            checklistItems: [],
           ),
         );
       }
@@ -48,12 +55,18 @@ class FirebaseBloc extends Bloc<FirebaseBlocEvent, FirebaseBlocState> {
             .then((_) => repository
                 .getUserAppointments(date: event.date)
                 .then((value) => emit(
-                      FirebaseBlocState.complete(appointments: value),
+                      FirebaseBlocState.complete(
+                        appointments: List<Appointment?>.from(
+                            value[ResponseType.appointments]!),
+                        checklistItems: List<ChecklistItem?>.from(
+                            value[ResponseType.checklistItems]!),
+                      ),
                     )));
       } catch (e) {
         emit(
           const FirebaseBlocState.complete(
             appointments: [],
+            checklistItems: [],
           ),
         );
       }
@@ -72,12 +85,18 @@ class FirebaseBloc extends Bloc<FirebaseBlocEvent, FirebaseBlocState> {
             .then((_) => repository
                 .getUserAppointments(date: event.date)
                 .then((value) => emit(
-                      FirebaseBlocState.complete(appointments: value),
+                      FirebaseBlocState.complete(
+                        appointments: List<Appointment?>.from(
+                            value[ResponseType.appointments]!),
+                        checklistItems: List<ChecklistItem?>.from(
+                            value[ResponseType.checklistItems]!),
+                      ),
                     )));
       } catch (e) {
         emit(
           const FirebaseBlocState.complete(
             appointments: [],
+            checklistItems: [],
           ),
         );
       }

@@ -27,9 +27,11 @@ class _$FirebaseBlocStateTearOff {
   }
 
   _FirebaseBlocStateComplete complete(
-      {required List<Appointment?> appointments}) {
+      {required List<Appointment?> appointments,
+      required List<ChecklistItem?> checklistItems}) {
     return _FirebaseBlocStateComplete(
       appointments: appointments,
+      checklistItems: checklistItems,
     );
   }
 }
@@ -43,21 +45,27 @@ mixin _$FirebaseBlocState {
   TResult when<TResult extends Object?>({
     required TResult Function() recieving,
     required TResult Function() sending,
-    required TResult Function(List<Appointment?> appointments) complete,
+    required TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)
+        complete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? recieving,
     TResult Function()? sending,
-    TResult Function(List<Appointment?> appointments)? complete,
+    TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)?
+        complete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? recieving,
     TResult Function()? sending,
-    TResult Function(List<Appointment?> appointments)? complete,
+    TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)?
+        complete,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -148,7 +156,9 @@ class _$_FirebaseBlocStateRecieving implements _FirebaseBlocStateRecieving {
   TResult when<TResult extends Object?>({
     required TResult Function() recieving,
     required TResult Function() sending,
-    required TResult Function(List<Appointment?> appointments) complete,
+    required TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)
+        complete,
   }) {
     return recieving();
   }
@@ -158,7 +168,9 @@ class _$_FirebaseBlocStateRecieving implements _FirebaseBlocStateRecieving {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? recieving,
     TResult Function()? sending,
-    TResult Function(List<Appointment?> appointments)? complete,
+    TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)?
+        complete,
   }) {
     return recieving?.call();
   }
@@ -168,7 +180,9 @@ class _$_FirebaseBlocStateRecieving implements _FirebaseBlocStateRecieving {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? recieving,
     TResult Function()? sending,
-    TResult Function(List<Appointment?> appointments)? complete,
+    TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)?
+        complete,
     required TResult orElse(),
   }) {
     if (recieving != null) {
@@ -261,7 +275,9 @@ class _$_FirebaseBlocStateSending implements _FirebaseBlocStateSending {
   TResult when<TResult extends Object?>({
     required TResult Function() recieving,
     required TResult Function() sending,
-    required TResult Function(List<Appointment?> appointments) complete,
+    required TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)
+        complete,
   }) {
     return sending();
   }
@@ -271,7 +287,9 @@ class _$_FirebaseBlocStateSending implements _FirebaseBlocStateSending {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? recieving,
     TResult Function()? sending,
-    TResult Function(List<Appointment?> appointments)? complete,
+    TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)?
+        complete,
   }) {
     return sending?.call();
   }
@@ -281,7 +299,9 @@ class _$_FirebaseBlocStateSending implements _FirebaseBlocStateSending {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? recieving,
     TResult Function()? sending,
-    TResult Function(List<Appointment?> appointments)? complete,
+    TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)?
+        complete,
     required TResult orElse(),
   }) {
     if (sending != null) {
@@ -334,7 +354,8 @@ abstract class _$FirebaseBlocStateCompleteCopyWith<$Res> {
   factory _$FirebaseBlocStateCompleteCopyWith(_FirebaseBlocStateComplete value,
           $Res Function(_FirebaseBlocStateComplete) then) =
       __$FirebaseBlocStateCompleteCopyWithImpl<$Res>;
-  $Res call({List<Appointment?> appointments});
+  $Res call(
+      {List<Appointment?> appointments, List<ChecklistItem?> checklistItems});
 }
 
 /// @nodoc
@@ -352,12 +373,17 @@ class __$FirebaseBlocStateCompleteCopyWithImpl<$Res>
   @override
   $Res call({
     Object? appointments = freezed,
+    Object? checklistItems = freezed,
   }) {
     return _then(_FirebaseBlocStateComplete(
       appointments: appointments == freezed
           ? _value.appointments
           : appointments // ignore: cast_nullable_to_non_nullable
               as List<Appointment?>,
+      checklistItems: checklistItems == freezed
+          ? _value.checklistItems
+          : checklistItems // ignore: cast_nullable_to_non_nullable
+              as List<ChecklistItem?>,
     ));
   }
 }
@@ -365,14 +391,17 @@ class __$FirebaseBlocStateCompleteCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_FirebaseBlocStateComplete implements _FirebaseBlocStateComplete {
-  const _$_FirebaseBlocStateComplete({required this.appointments});
+  const _$_FirebaseBlocStateComplete(
+      {required this.appointments, required this.checklistItems});
 
   @override
   final List<Appointment?> appointments;
+  @override
+  final List<ChecklistItem?> checklistItems;
 
   @override
   String toString() {
-    return 'FirebaseBlocState.complete(appointments: $appointments)';
+    return 'FirebaseBlocState.complete(appointments: $appointments, checklistItems: $checklistItems)';
   }
 
   @override
@@ -381,12 +410,16 @@ class _$_FirebaseBlocStateComplete implements _FirebaseBlocStateComplete {
         (other.runtimeType == runtimeType &&
             other is _FirebaseBlocStateComplete &&
             const DeepCollectionEquality()
-                .equals(other.appointments, appointments));
+                .equals(other.appointments, appointments) &&
+            const DeepCollectionEquality()
+                .equals(other.checklistItems, checklistItems));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(appointments));
+      runtimeType,
+      const DeepCollectionEquality().hash(appointments),
+      const DeepCollectionEquality().hash(checklistItems));
 
   @JsonKey(ignore: true)
   @override
@@ -400,9 +433,11 @@ class _$_FirebaseBlocStateComplete implements _FirebaseBlocStateComplete {
   TResult when<TResult extends Object?>({
     required TResult Function() recieving,
     required TResult Function() sending,
-    required TResult Function(List<Appointment?> appointments) complete,
+    required TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)
+        complete,
   }) {
-    return complete(appointments);
+    return complete(appointments, checklistItems);
   }
 
   @override
@@ -410,9 +445,11 @@ class _$_FirebaseBlocStateComplete implements _FirebaseBlocStateComplete {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? recieving,
     TResult Function()? sending,
-    TResult Function(List<Appointment?> appointments)? complete,
+    TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)?
+        complete,
   }) {
-    return complete?.call(appointments);
+    return complete?.call(appointments, checklistItems);
   }
 
   @override
@@ -420,11 +457,13 @@ class _$_FirebaseBlocStateComplete implements _FirebaseBlocStateComplete {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? recieving,
     TResult Function()? sending,
-    TResult Function(List<Appointment?> appointments)? complete,
+    TResult Function(List<Appointment?> appointments,
+            List<ChecklistItem?> checklistItems)?
+        complete,
     required TResult orElse(),
   }) {
     if (complete != null) {
-      return complete(appointments);
+      return complete(appointments, checklistItems);
     }
     return orElse();
   }
@@ -466,10 +505,12 @@ class _$_FirebaseBlocStateComplete implements _FirebaseBlocStateComplete {
 
 abstract class _FirebaseBlocStateComplete implements FirebaseBlocState {
   const factory _FirebaseBlocStateComplete(
-          {required List<Appointment?> appointments}) =
+          {required List<Appointment?> appointments,
+          required List<ChecklistItem?> checklistItems}) =
       _$_FirebaseBlocStateComplete;
 
   List<Appointment?> get appointments;
+  List<ChecklistItem?> get checklistItems;
   @JsonKey(ignore: true)
   _$FirebaseBlocStateCompleteCopyWith<_FirebaseBlocStateComplete>
       get copyWith => throw _privateConstructorUsedError;

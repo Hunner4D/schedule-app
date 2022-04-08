@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_app/logic/bloc/bloc_barrel.dart';
 import 'package:schedule_app/logic/constants/date_time.dart';
 import 'package:schedule_app/logic/models/appointment.dart';
+import 'package:schedule_app/presentation/constants/colors.dart';
 import 'package:schedule_app/presentation/screens/home/widgets/input_widget.dart';
 import 'package:schedule_app/presentation/screens/home/widgets/list_item.dart';
 
@@ -19,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool showNotePad = false;
   late DateTime dateTime = DateTime.now();
   late String dateCode = '${months[dateTime.month - 1]}${dateTime.day}';
 
@@ -87,13 +90,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }) {
     final blankInput = RegExp(r'^$');
     if (!blankInput.hasMatch(text) && text.isNotEmpty) {
-      BlocProvider.of<FirebaseBloc>(context).add(
-        FirebaseBlocEvent.setUserData(
-          date: dateCode,
-          time: time,
-          data: text,
-        ),
-      );
+      showNotePad
+          ? null
+          : BlocProvider.of<FirebaseBloc>(context).add(
+              FirebaseBlocEvent.setUserData(
+                date: dateCode,
+                time: time,
+                data: text,
+              ),
+            );
     }
   }
 
@@ -127,11 +132,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: BlocBuilder<ThemeDataCubit, ThemeDataCubitState>(
-            builder: (context, themeState) {
-          return Column(
+    return BlocBuilder<ThemeDataCubit, ThemeDataCubitState>(
+        builder: (context, themeState) {
+      return Scaffold(
+        body: SafeArea(
+          child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -142,10 +147,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: themeState.map(
                   lightMode: (_) => InputWidget(
                     darkmode: false,
+                    notepadActive: showNotePad,
                     onSubmit: submitAppointment,
                   ),
                   darkMode: (_) => InputWidget(
                     darkmode: true,
+                    notepadActive: showNotePad,
                     onSubmit: submitAppointment,
                   ),
                 ),
@@ -153,13 +160,14 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: GestureDetector(
-                  onTap: () async => await selectDate(context),
+                  onTap: () async =>
+                      showNotePad ? null : await selectDate(context),
                   child: Text(
-                    '${months[dateTime.month - 1]} ${weekdays[dateTime.weekday - 1]} ${dateTime.day}',
-                    style: const TextStyle(
+                    showNotePad ? 'Check-List' : '${months[dateTime.month - 1]} ${weekdays[dateTime.weekday - 1]} ${dateTime.day}',
+                    style: TextStyle(
                       fontFamily: 'Now-Light',
                       fontSize: 35,
-                      decoration: TextDecoration.underline,
+                      decoration: showNotePad ? null : TextDecoration.underline,
                       letterSpacing: 3.5,
                     ),
                   ),
@@ -168,15 +176,44 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: BlocBuilder<FirebaseBloc, FirebaseBlocState>(
                     builder: (context, firebaseState) {
-                  return ListView(
-                    children: returnAllListItems(themeState, firebaseState),
-                  );
+                  return showNotePad
+                      ? Container()
+                      : ListView(
+                          children:
+                              returnAllListItems(themeState, firebaseState),
+                        );
                 }),
               ),
             ],
-          );
-        }),
-      ),
-    );
+          ),
+        ),
+        floatingActionButton: SizedBox(
+          height: 75,
+          width: 75,
+          child: FittedBox(
+            child: FloatingActionButton(
+              onPressed: () => setState(() {
+                showNotePad = !showNotePad;
+              }),
+              backgroundColor: themeState.map(
+                lightMode: (_) => primaryColor,
+                darkMode: (_) => Colors.white,
+              ),
+              elevation: 12,
+              child: Icon(
+                showNotePad
+                    ? CupertinoIcons.calendar
+                    : CupertinoIcons.square_pencil,
+                color: themeState.map(
+                  lightMode: (_) => Colors.white,
+                  darkMode: (_) => primaryColor,
+                ),
+                size: 27.5,
+              ),
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
