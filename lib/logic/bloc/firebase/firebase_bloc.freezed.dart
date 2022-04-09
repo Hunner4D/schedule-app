@@ -526,20 +526,37 @@ class _$FirebaseBlocEventTearOff {
     );
   }
 
-  _FirebaseBlocEventSetUserData setUserData(
+  _FirebaseBlocEventSetAppointment setAppointment(
       {required String date, required String time, required String data}) {
-    return _FirebaseBlocEventSetUserData(
+    return _FirebaseBlocEventSetAppointment(
       date: date,
       time: time,
       data: data,
     );
   }
 
-  _FirebaseBlocEventRemoveUserData removeUserData(
+  _FirebaseBlocEventSetChecklistItem setChecklistItem(
+      {required String date, required String task}) {
+    return _FirebaseBlocEventSetChecklistItem(
+      date: date,
+      task: task,
+    );
+  }
+
+  _FirebaseBlocEventRemoveAppointment removeAppointment(
       {required String date, required String time}) {
-    return _FirebaseBlocEventRemoveUserData(
+    return _FirebaseBlocEventRemoveAppointment(
       date: date,
       time: time,
+    );
+  }
+
+  _FirebaseBlocEventUpdateOrRemoveChecklistItem updateOrRemoveChecklistItem(
+      {required String date, required String task, required bool? update}) {
+    return _FirebaseBlocEventUpdateOrRemoveChecklistItem(
+      date: date,
+      task: task,
+      update: update,
     );
   }
 }
@@ -555,45 +572,70 @@ mixin _$FirebaseBlocEvent {
   TResult when<TResult extends Object?>({
     required TResult Function(String date) getUserData,
     required TResult Function(String date, String time, String data)
-        setUserData,
-    required TResult Function(String date, String time) removeUserData,
+        setAppointment,
+    required TResult Function(String date, String task) setChecklistItem,
+    required TResult Function(String date, String time) removeAppointment,
+    required TResult Function(String date, String task, bool? update)
+        updateOrRemoveChecklistItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String date)? getUserData,
-    TResult Function(String date, String time, String data)? setUserData,
-    TResult Function(String date, String time)? removeUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String date)? getUserData,
-    TResult Function(String date, String time, String data)? setUserData,
-    TResult Function(String date, String time)? removeUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FirebaseBlocEventGetUserData value) getUserData,
-    required TResult Function(_FirebaseBlocEventSetUserData value) setUserData,
-    required TResult Function(_FirebaseBlocEventRemoveUserData value)
-        removeUserData,
+    required TResult Function(_FirebaseBlocEventSetAppointment value)
+        setAppointment,
+    required TResult Function(_FirebaseBlocEventSetChecklistItem value)
+        setChecklistItem,
+    required TResult Function(_FirebaseBlocEventRemoveAppointment value)
+        removeAppointment,
+    required TResult Function(
+            _FirebaseBlocEventUpdateOrRemoveChecklistItem value)
+        updateOrRemoveChecklistItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
-    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
-    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -706,8 +748,11 @@ class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
   TResult when<TResult extends Object?>({
     required TResult Function(String date) getUserData,
     required TResult Function(String date, String time, String data)
-        setUserData,
-    required TResult Function(String date, String time) removeUserData,
+        setAppointment,
+    required TResult Function(String date, String task) setChecklistItem,
+    required TResult Function(String date, String time) removeAppointment,
+    required TResult Function(String date, String task, bool? update)
+        updateOrRemoveChecklistItem,
   }) {
     return getUserData(date);
   }
@@ -716,8 +761,11 @@ class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String date)? getUserData,
-    TResult Function(String date, String time, String data)? setUserData,
-    TResult Function(String date, String time)? removeUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
   }) {
     return getUserData?.call(date);
   }
@@ -726,8 +774,11 @@ class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String date)? getUserData,
-    TResult Function(String date, String time, String data)? setUserData,
-    TResult Function(String date, String time)? removeUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
     required TResult orElse(),
   }) {
     if (getUserData != null) {
@@ -740,9 +791,15 @@ class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FirebaseBlocEventGetUserData value) getUserData,
-    required TResult Function(_FirebaseBlocEventSetUserData value) setUserData,
-    required TResult Function(_FirebaseBlocEventRemoveUserData value)
-        removeUserData,
+    required TResult Function(_FirebaseBlocEventSetAppointment value)
+        setAppointment,
+    required TResult Function(_FirebaseBlocEventSetChecklistItem value)
+        setChecklistItem,
+    required TResult Function(_FirebaseBlocEventRemoveAppointment value)
+        removeAppointment,
+    required TResult Function(
+            _FirebaseBlocEventUpdateOrRemoveChecklistItem value)
+        updateOrRemoveChecklistItem,
   }) {
     return getUserData(this);
   }
@@ -751,8 +808,13 @@ class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
-    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
   }) {
     return getUserData?.call(this);
   }
@@ -761,8 +823,13 @@ class _$_FirebaseBlocEventGetUserData implements _FirebaseBlocEventGetUserData {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
-    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
     required TResult orElse(),
   }) {
     if (getUserData != null) {
@@ -785,28 +852,28 @@ abstract class _FirebaseBlocEventGetUserData implements FirebaseBlocEvent {
 }
 
 /// @nodoc
-abstract class _$FirebaseBlocEventSetUserDataCopyWith<$Res>
+abstract class _$FirebaseBlocEventSetAppointmentCopyWith<$Res>
     implements $FirebaseBlocEventCopyWith<$Res> {
-  factory _$FirebaseBlocEventSetUserDataCopyWith(
-          _FirebaseBlocEventSetUserData value,
-          $Res Function(_FirebaseBlocEventSetUserData) then) =
-      __$FirebaseBlocEventSetUserDataCopyWithImpl<$Res>;
+  factory _$FirebaseBlocEventSetAppointmentCopyWith(
+          _FirebaseBlocEventSetAppointment value,
+          $Res Function(_FirebaseBlocEventSetAppointment) then) =
+      __$FirebaseBlocEventSetAppointmentCopyWithImpl<$Res>;
   @override
   $Res call({String date, String time, String data});
 }
 
 /// @nodoc
-class __$FirebaseBlocEventSetUserDataCopyWithImpl<$Res>
+class __$FirebaseBlocEventSetAppointmentCopyWithImpl<$Res>
     extends _$FirebaseBlocEventCopyWithImpl<$Res>
-    implements _$FirebaseBlocEventSetUserDataCopyWith<$Res> {
-  __$FirebaseBlocEventSetUserDataCopyWithImpl(
-      _FirebaseBlocEventSetUserData _value,
-      $Res Function(_FirebaseBlocEventSetUserData) _then)
-      : super(_value, (v) => _then(v as _FirebaseBlocEventSetUserData));
+    implements _$FirebaseBlocEventSetAppointmentCopyWith<$Res> {
+  __$FirebaseBlocEventSetAppointmentCopyWithImpl(
+      _FirebaseBlocEventSetAppointment _value,
+      $Res Function(_FirebaseBlocEventSetAppointment) _then)
+      : super(_value, (v) => _then(v as _FirebaseBlocEventSetAppointment));
 
   @override
-  _FirebaseBlocEventSetUserData get _value =>
-      super._value as _FirebaseBlocEventSetUserData;
+  _FirebaseBlocEventSetAppointment get _value =>
+      super._value as _FirebaseBlocEventSetAppointment;
 
   @override
   $Res call({
@@ -814,7 +881,7 @@ class __$FirebaseBlocEventSetUserDataCopyWithImpl<$Res>
     Object? time = freezed,
     Object? data = freezed,
   }) {
-    return _then(_FirebaseBlocEventSetUserData(
+    return _then(_FirebaseBlocEventSetAppointment(
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -833,8 +900,9 @@ class __$FirebaseBlocEventSetUserDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_FirebaseBlocEventSetUserData implements _FirebaseBlocEventSetUserData {
-  const _$_FirebaseBlocEventSetUserData(
+class _$_FirebaseBlocEventSetAppointment
+    implements _FirebaseBlocEventSetAppointment {
+  const _$_FirebaseBlocEventSetAppointment(
       {required this.date, required this.time, required this.data});
 
   @override
@@ -846,14 +914,14 @@ class _$_FirebaseBlocEventSetUserData implements _FirebaseBlocEventSetUserData {
 
   @override
   String toString() {
-    return 'FirebaseBlocEvent.setUserData(date: $date, time: $time, data: $data)';
+    return 'FirebaseBlocEvent.setAppointment(date: $date, time: $time, data: $data)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _FirebaseBlocEventSetUserData &&
+            other is _FirebaseBlocEventSetAppointment &&
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.time, time) &&
             const DeepCollectionEquality().equals(other.data, data));
@@ -868,41 +936,50 @@ class _$_FirebaseBlocEventSetUserData implements _FirebaseBlocEventSetUserData {
 
   @JsonKey(ignore: true)
   @override
-  _$FirebaseBlocEventSetUserDataCopyWith<_FirebaseBlocEventSetUserData>
-      get copyWith => __$FirebaseBlocEventSetUserDataCopyWithImpl<
-          _FirebaseBlocEventSetUserData>(this, _$identity);
+  _$FirebaseBlocEventSetAppointmentCopyWith<_FirebaseBlocEventSetAppointment>
+      get copyWith => __$FirebaseBlocEventSetAppointmentCopyWithImpl<
+          _FirebaseBlocEventSetAppointment>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String date) getUserData,
     required TResult Function(String date, String time, String data)
-        setUserData,
-    required TResult Function(String date, String time) removeUserData,
+        setAppointment,
+    required TResult Function(String date, String task) setChecklistItem,
+    required TResult Function(String date, String time) removeAppointment,
+    required TResult Function(String date, String task, bool? update)
+        updateOrRemoveChecklistItem,
   }) {
-    return setUserData(date, time, data);
+    return setAppointment(date, time, data);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String date)? getUserData,
-    TResult Function(String date, String time, String data)? setUserData,
-    TResult Function(String date, String time)? removeUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
   }) {
-    return setUserData?.call(date, time, data);
+    return setAppointment?.call(date, time, data);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String date)? getUserData,
-    TResult Function(String date, String time, String data)? setUserData,
-    TResult Function(String date, String time)? removeUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
     required TResult orElse(),
   }) {
-    if (setUserData != null) {
-      return setUserData(date, time, data);
+    if (setAppointment != null) {
+      return setAppointment(date, time, data);
     }
     return orElse();
   }
@@ -911,43 +988,59 @@ class _$_FirebaseBlocEventSetUserData implements _FirebaseBlocEventSetUserData {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FirebaseBlocEventGetUserData value) getUserData,
-    required TResult Function(_FirebaseBlocEventSetUserData value) setUserData,
-    required TResult Function(_FirebaseBlocEventRemoveUserData value)
-        removeUserData,
+    required TResult Function(_FirebaseBlocEventSetAppointment value)
+        setAppointment,
+    required TResult Function(_FirebaseBlocEventSetChecklistItem value)
+        setChecklistItem,
+    required TResult Function(_FirebaseBlocEventRemoveAppointment value)
+        removeAppointment,
+    required TResult Function(
+            _FirebaseBlocEventUpdateOrRemoveChecklistItem value)
+        updateOrRemoveChecklistItem,
   }) {
-    return setUserData(this);
+    return setAppointment(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
-    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
   }) {
-    return setUserData?.call(this);
+    return setAppointment?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
-    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
     required TResult orElse(),
   }) {
-    if (setUserData != null) {
-      return setUserData(this);
+    if (setAppointment != null) {
+      return setAppointment(this);
     }
     return orElse();
   }
 }
 
-abstract class _FirebaseBlocEventSetUserData implements FirebaseBlocEvent {
-  const factory _FirebaseBlocEventSetUserData(
+abstract class _FirebaseBlocEventSetAppointment implements FirebaseBlocEvent {
+  const factory _FirebaseBlocEventSetAppointment(
       {required String date,
       required String time,
-      required String data}) = _$_FirebaseBlocEventSetUserData;
+      required String data}) = _$_FirebaseBlocEventSetAppointment;
 
   @override
   String get date;
@@ -955,40 +1048,232 @@ abstract class _FirebaseBlocEventSetUserData implements FirebaseBlocEvent {
   String get data;
   @override
   @JsonKey(ignore: true)
-  _$FirebaseBlocEventSetUserDataCopyWith<_FirebaseBlocEventSetUserData>
+  _$FirebaseBlocEventSetAppointmentCopyWith<_FirebaseBlocEventSetAppointment>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$FirebaseBlocEventRemoveUserDataCopyWith<$Res>
+abstract class _$FirebaseBlocEventSetChecklistItemCopyWith<$Res>
     implements $FirebaseBlocEventCopyWith<$Res> {
-  factory _$FirebaseBlocEventRemoveUserDataCopyWith(
-          _FirebaseBlocEventRemoveUserData value,
-          $Res Function(_FirebaseBlocEventRemoveUserData) then) =
-      __$FirebaseBlocEventRemoveUserDataCopyWithImpl<$Res>;
+  factory _$FirebaseBlocEventSetChecklistItemCopyWith(
+          _FirebaseBlocEventSetChecklistItem value,
+          $Res Function(_FirebaseBlocEventSetChecklistItem) then) =
+      __$FirebaseBlocEventSetChecklistItemCopyWithImpl<$Res>;
+  @override
+  $Res call({String date, String task});
+}
+
+/// @nodoc
+class __$FirebaseBlocEventSetChecklistItemCopyWithImpl<$Res>
+    extends _$FirebaseBlocEventCopyWithImpl<$Res>
+    implements _$FirebaseBlocEventSetChecklistItemCopyWith<$Res> {
+  __$FirebaseBlocEventSetChecklistItemCopyWithImpl(
+      _FirebaseBlocEventSetChecklistItem _value,
+      $Res Function(_FirebaseBlocEventSetChecklistItem) _then)
+      : super(_value, (v) => _then(v as _FirebaseBlocEventSetChecklistItem));
+
+  @override
+  _FirebaseBlocEventSetChecklistItem get _value =>
+      super._value as _FirebaseBlocEventSetChecklistItem;
+
+  @override
+  $Res call({
+    Object? date = freezed,
+    Object? task = freezed,
+  }) {
+    return _then(_FirebaseBlocEventSetChecklistItem(
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      task: task == freezed
+          ? _value.task
+          : task // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_FirebaseBlocEventSetChecklistItem
+    implements _FirebaseBlocEventSetChecklistItem {
+  const _$_FirebaseBlocEventSetChecklistItem(
+      {required this.date, required this.task});
+
+  @override
+  final String date;
+  @override
+  final String task;
+
+  @override
+  String toString() {
+    return 'FirebaseBlocEvent.setChecklistItem(date: $date, task: $task)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _FirebaseBlocEventSetChecklistItem &&
+            const DeepCollectionEquality().equals(other.date, date) &&
+            const DeepCollectionEquality().equals(other.task, task));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(date),
+      const DeepCollectionEquality().hash(task));
+
+  @JsonKey(ignore: true)
+  @override
+  _$FirebaseBlocEventSetChecklistItemCopyWith<
+          _FirebaseBlocEventSetChecklistItem>
+      get copyWith => __$FirebaseBlocEventSetChecklistItemCopyWithImpl<
+          _FirebaseBlocEventSetChecklistItem>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String date) getUserData,
+    required TResult Function(String date, String time, String data)
+        setAppointment,
+    required TResult Function(String date, String task) setChecklistItem,
+    required TResult Function(String date, String time) removeAppointment,
+    required TResult Function(String date, String task, bool? update)
+        updateOrRemoveChecklistItem,
+  }) {
+    return setChecklistItem(date, task);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
+  }) {
+    return setChecklistItem?.call(date, task);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
+    required TResult orElse(),
+  }) {
+    if (setChecklistItem != null) {
+      return setChecklistItem(date, task);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FirebaseBlocEventGetUserData value) getUserData,
+    required TResult Function(_FirebaseBlocEventSetAppointment value)
+        setAppointment,
+    required TResult Function(_FirebaseBlocEventSetChecklistItem value)
+        setChecklistItem,
+    required TResult Function(_FirebaseBlocEventRemoveAppointment value)
+        removeAppointment,
+    required TResult Function(
+            _FirebaseBlocEventUpdateOrRemoveChecklistItem value)
+        updateOrRemoveChecklistItem,
+  }) {
+    return setChecklistItem(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
+  }) {
+    return setChecklistItem?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
+    required TResult orElse(),
+  }) {
+    if (setChecklistItem != null) {
+      return setChecklistItem(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _FirebaseBlocEventSetChecklistItem implements FirebaseBlocEvent {
+  const factory _FirebaseBlocEventSetChecklistItem(
+      {required String date,
+      required String task}) = _$_FirebaseBlocEventSetChecklistItem;
+
+  @override
+  String get date;
+  String get task;
+  @override
+  @JsonKey(ignore: true)
+  _$FirebaseBlocEventSetChecklistItemCopyWith<
+          _FirebaseBlocEventSetChecklistItem>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$FirebaseBlocEventRemoveAppointmentCopyWith<$Res>
+    implements $FirebaseBlocEventCopyWith<$Res> {
+  factory _$FirebaseBlocEventRemoveAppointmentCopyWith(
+          _FirebaseBlocEventRemoveAppointment value,
+          $Res Function(_FirebaseBlocEventRemoveAppointment) then) =
+      __$FirebaseBlocEventRemoveAppointmentCopyWithImpl<$Res>;
   @override
   $Res call({String date, String time});
 }
 
 /// @nodoc
-class __$FirebaseBlocEventRemoveUserDataCopyWithImpl<$Res>
+class __$FirebaseBlocEventRemoveAppointmentCopyWithImpl<$Res>
     extends _$FirebaseBlocEventCopyWithImpl<$Res>
-    implements _$FirebaseBlocEventRemoveUserDataCopyWith<$Res> {
-  __$FirebaseBlocEventRemoveUserDataCopyWithImpl(
-      _FirebaseBlocEventRemoveUserData _value,
-      $Res Function(_FirebaseBlocEventRemoveUserData) _then)
-      : super(_value, (v) => _then(v as _FirebaseBlocEventRemoveUserData));
+    implements _$FirebaseBlocEventRemoveAppointmentCopyWith<$Res> {
+  __$FirebaseBlocEventRemoveAppointmentCopyWithImpl(
+      _FirebaseBlocEventRemoveAppointment _value,
+      $Res Function(_FirebaseBlocEventRemoveAppointment) _then)
+      : super(_value, (v) => _then(v as _FirebaseBlocEventRemoveAppointment));
 
   @override
-  _FirebaseBlocEventRemoveUserData get _value =>
-      super._value as _FirebaseBlocEventRemoveUserData;
+  _FirebaseBlocEventRemoveAppointment get _value =>
+      super._value as _FirebaseBlocEventRemoveAppointment;
 
   @override
   $Res call({
     Object? date = freezed,
     Object? time = freezed,
   }) {
-    return _then(_FirebaseBlocEventRemoveUserData(
+    return _then(_FirebaseBlocEventRemoveAppointment(
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -1003,9 +1288,9 @@ class __$FirebaseBlocEventRemoveUserDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_FirebaseBlocEventRemoveUserData
-    implements _FirebaseBlocEventRemoveUserData {
-  const _$_FirebaseBlocEventRemoveUserData(
+class _$_FirebaseBlocEventRemoveAppointment
+    implements _FirebaseBlocEventRemoveAppointment {
+  const _$_FirebaseBlocEventRemoveAppointment(
       {required this.date, required this.time});
 
   @override
@@ -1015,14 +1300,14 @@ class _$_FirebaseBlocEventRemoveUserData
 
   @override
   String toString() {
-    return 'FirebaseBlocEvent.removeUserData(date: $date, time: $time)';
+    return 'FirebaseBlocEvent.removeAppointment(date: $date, time: $time)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _FirebaseBlocEventRemoveUserData &&
+            other is _FirebaseBlocEventRemoveAppointment &&
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.time, time));
   }
@@ -1035,41 +1320,51 @@ class _$_FirebaseBlocEventRemoveUserData
 
   @JsonKey(ignore: true)
   @override
-  _$FirebaseBlocEventRemoveUserDataCopyWith<_FirebaseBlocEventRemoveUserData>
-      get copyWith => __$FirebaseBlocEventRemoveUserDataCopyWithImpl<
-          _FirebaseBlocEventRemoveUserData>(this, _$identity);
+  _$FirebaseBlocEventRemoveAppointmentCopyWith<
+          _FirebaseBlocEventRemoveAppointment>
+      get copyWith => __$FirebaseBlocEventRemoveAppointmentCopyWithImpl<
+          _FirebaseBlocEventRemoveAppointment>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String date) getUserData,
     required TResult Function(String date, String time, String data)
-        setUserData,
-    required TResult Function(String date, String time) removeUserData,
+        setAppointment,
+    required TResult Function(String date, String task) setChecklistItem,
+    required TResult Function(String date, String time) removeAppointment,
+    required TResult Function(String date, String task, bool? update)
+        updateOrRemoveChecklistItem,
   }) {
-    return removeUserData(date, time);
+    return removeAppointment(date, time);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String date)? getUserData,
-    TResult Function(String date, String time, String data)? setUserData,
-    TResult Function(String date, String time)? removeUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
   }) {
-    return removeUserData?.call(date, time);
+    return removeAppointment?.call(date, time);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String date)? getUserData,
-    TResult Function(String date, String time, String data)? setUserData,
-    TResult Function(String date, String time)? removeUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
     required TResult orElse(),
   }) {
-    if (removeUserData != null) {
-      return removeUserData(date, time);
+    if (removeAppointment != null) {
+      return removeAppointment(date, time);
     }
     return orElse();
   }
@@ -1078,48 +1373,272 @@ class _$_FirebaseBlocEventRemoveUserData
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FirebaseBlocEventGetUserData value) getUserData,
-    required TResult Function(_FirebaseBlocEventSetUserData value) setUserData,
-    required TResult Function(_FirebaseBlocEventRemoveUserData value)
-        removeUserData,
+    required TResult Function(_FirebaseBlocEventSetAppointment value)
+        setAppointment,
+    required TResult Function(_FirebaseBlocEventSetChecklistItem value)
+        setChecklistItem,
+    required TResult Function(_FirebaseBlocEventRemoveAppointment value)
+        removeAppointment,
+    required TResult Function(
+            _FirebaseBlocEventUpdateOrRemoveChecklistItem value)
+        updateOrRemoveChecklistItem,
   }) {
-    return removeUserData(this);
+    return removeAppointment(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
-    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
   }) {
-    return removeUserData?.call(this);
+    return removeAppointment?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
-    TResult Function(_FirebaseBlocEventSetUserData value)? setUserData,
-    TResult Function(_FirebaseBlocEventRemoveUserData value)? removeUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
     required TResult orElse(),
   }) {
-    if (removeUserData != null) {
-      return removeUserData(this);
+    if (removeAppointment != null) {
+      return removeAppointment(this);
     }
     return orElse();
   }
 }
 
-abstract class _FirebaseBlocEventRemoveUserData implements FirebaseBlocEvent {
-  const factory _FirebaseBlocEventRemoveUserData(
+abstract class _FirebaseBlocEventRemoveAppointment
+    implements FirebaseBlocEvent {
+  const factory _FirebaseBlocEventRemoveAppointment(
       {required String date,
-      required String time}) = _$_FirebaseBlocEventRemoveUserData;
+      required String time}) = _$_FirebaseBlocEventRemoveAppointment;
 
   @override
   String get date;
   String get time;
   @override
   @JsonKey(ignore: true)
-  _$FirebaseBlocEventRemoveUserDataCopyWith<_FirebaseBlocEventRemoveUserData>
+  _$FirebaseBlocEventRemoveAppointmentCopyWith<
+          _FirebaseBlocEventRemoveAppointment>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$FirebaseBlocEventUpdateOrRemoveChecklistItemCopyWith<$Res>
+    implements $FirebaseBlocEventCopyWith<$Res> {
+  factory _$FirebaseBlocEventUpdateOrRemoveChecklistItemCopyWith(
+          _FirebaseBlocEventUpdateOrRemoveChecklistItem value,
+          $Res Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem) then) =
+      __$FirebaseBlocEventUpdateOrRemoveChecklistItemCopyWithImpl<$Res>;
+  @override
+  $Res call({String date, String task, bool? update});
+}
+
+/// @nodoc
+class __$FirebaseBlocEventUpdateOrRemoveChecklistItemCopyWithImpl<$Res>
+    extends _$FirebaseBlocEventCopyWithImpl<$Res>
+    implements _$FirebaseBlocEventUpdateOrRemoveChecklistItemCopyWith<$Res> {
+  __$FirebaseBlocEventUpdateOrRemoveChecklistItemCopyWithImpl(
+      _FirebaseBlocEventUpdateOrRemoveChecklistItem _value,
+      $Res Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem) _then)
+      : super(_value,
+            (v) => _then(v as _FirebaseBlocEventUpdateOrRemoveChecklistItem));
+
+  @override
+  _FirebaseBlocEventUpdateOrRemoveChecklistItem get _value =>
+      super._value as _FirebaseBlocEventUpdateOrRemoveChecklistItem;
+
+  @override
+  $Res call({
+    Object? date = freezed,
+    Object? task = freezed,
+    Object? update = freezed,
+  }) {
+    return _then(_FirebaseBlocEventUpdateOrRemoveChecklistItem(
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      task: task == freezed
+          ? _value.task
+          : task // ignore: cast_nullable_to_non_nullable
+              as String,
+      update: update == freezed
+          ? _value.update
+          : update // ignore: cast_nullable_to_non_nullable
+              as bool?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_FirebaseBlocEventUpdateOrRemoveChecklistItem
+    implements _FirebaseBlocEventUpdateOrRemoveChecklistItem {
+  const _$_FirebaseBlocEventUpdateOrRemoveChecklistItem(
+      {required this.date, required this.task, required this.update});
+
+  @override
+  final String date;
+  @override
+  final String task;
+  @override
+  final bool? update;
+
+  @override
+  String toString() {
+    return 'FirebaseBlocEvent.updateOrRemoveChecklistItem(date: $date, task: $task, update: $update)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _FirebaseBlocEventUpdateOrRemoveChecklistItem &&
+            const DeepCollectionEquality().equals(other.date, date) &&
+            const DeepCollectionEquality().equals(other.task, task) &&
+            const DeepCollectionEquality().equals(other.update, update));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(date),
+      const DeepCollectionEquality().hash(task),
+      const DeepCollectionEquality().hash(update));
+
+  @JsonKey(ignore: true)
+  @override
+  _$FirebaseBlocEventUpdateOrRemoveChecklistItemCopyWith<
+          _FirebaseBlocEventUpdateOrRemoveChecklistItem>
+      get copyWith =>
+          __$FirebaseBlocEventUpdateOrRemoveChecklistItemCopyWithImpl<
+              _FirebaseBlocEventUpdateOrRemoveChecklistItem>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String date) getUserData,
+    required TResult Function(String date, String time, String data)
+        setAppointment,
+    required TResult Function(String date, String task) setChecklistItem,
+    required TResult Function(String date, String time) removeAppointment,
+    required TResult Function(String date, String task, bool? update)
+        updateOrRemoveChecklistItem,
+  }) {
+    return updateOrRemoveChecklistItem(date, task, update);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
+  }) {
+    return updateOrRemoveChecklistItem?.call(date, task, update);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String date)? getUserData,
+    TResult Function(String date, String time, String data)? setAppointment,
+    TResult Function(String date, String task)? setChecklistItem,
+    TResult Function(String date, String time)? removeAppointment,
+    TResult Function(String date, String task, bool? update)?
+        updateOrRemoveChecklistItem,
+    required TResult orElse(),
+  }) {
+    if (updateOrRemoveChecklistItem != null) {
+      return updateOrRemoveChecklistItem(date, task, update);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FirebaseBlocEventGetUserData value) getUserData,
+    required TResult Function(_FirebaseBlocEventSetAppointment value)
+        setAppointment,
+    required TResult Function(_FirebaseBlocEventSetChecklistItem value)
+        setChecklistItem,
+    required TResult Function(_FirebaseBlocEventRemoveAppointment value)
+        removeAppointment,
+    required TResult Function(
+            _FirebaseBlocEventUpdateOrRemoveChecklistItem value)
+        updateOrRemoveChecklistItem,
+  }) {
+    return updateOrRemoveChecklistItem(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
+  }) {
+    return updateOrRemoveChecklistItem?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FirebaseBlocEventGetUserData value)? getUserData,
+    TResult Function(_FirebaseBlocEventSetAppointment value)? setAppointment,
+    TResult Function(_FirebaseBlocEventSetChecklistItem value)?
+        setChecklistItem,
+    TResult Function(_FirebaseBlocEventRemoveAppointment value)?
+        removeAppointment,
+    TResult Function(_FirebaseBlocEventUpdateOrRemoveChecklistItem value)?
+        updateOrRemoveChecklistItem,
+    required TResult orElse(),
+  }) {
+    if (updateOrRemoveChecklistItem != null) {
+      return updateOrRemoveChecklistItem(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _FirebaseBlocEventUpdateOrRemoveChecklistItem
+    implements FirebaseBlocEvent {
+  const factory _FirebaseBlocEventUpdateOrRemoveChecklistItem(
+      {required String date,
+      required String task,
+      required bool? update}) = _$_FirebaseBlocEventUpdateOrRemoveChecklistItem;
+
+  @override
+  String get date;
+  String get task;
+  bool? get update;
+  @override
+  @JsonKey(ignore: true)
+  _$FirebaseBlocEventUpdateOrRemoveChecklistItemCopyWith<
+          _FirebaseBlocEventUpdateOrRemoveChecklistItem>
       get copyWith => throw _privateConstructorUsedError;
 }

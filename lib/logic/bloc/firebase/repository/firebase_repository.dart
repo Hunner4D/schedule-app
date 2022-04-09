@@ -33,8 +33,6 @@ class FirebaseRepository {
                 ? appointmentsData[date] as Map<String, dynamic>
                 : {};
 
-            List checklistData = documentData['checklist'] ?? [];
-
             List<Appointment?> appointments = [];
             for (var element in dateData.keys) {
               appointments.add(
@@ -45,7 +43,20 @@ class FirebaseRepository {
               );
             }
 
+            List checklistData = documentData['checklist'] ?? [];
+
+            List<ChecklistItem?> checklist = [];
+            for (var element in checklistData) {
+              checklist.add(
+                ChecklistItem(
+                  task: element['task'],
+                  complete: element['complete'],
+                ),
+              );
+            }
+
             response[ResponseType.appointments] = appointments;
+            response[ResponseType.checklistItems] = checklist;
 
             return response;
           } else {
@@ -123,6 +134,49 @@ class FirebaseRepository {
     }
   }
 
+  // SET CHECKLIST ITEM
+  Future<void> setChecklistItem({
+    required String task,
+  }) async {
+    try {
+      final _auth = FirebaseAuth.instance;
+      final _firestore = FirebaseFirestore.instance;
+      final user = _auth.currentUser;
+      if (user != null) {
+        await _firestore
+            .collection("usersCollection")
+            .where("uid", isEqualTo: user.uid)
+            .get()
+            .then((event) {
+          if (event.docs.isNotEmpty) {
+            var document = event.docs.single;
+            Map<String, dynamic> documentData = document.data();
+            List checklistData = documentData['checklist'] ?? [];
+
+            _firestore.collection("usersCollection").doc(document.id).set({
+              "checklist": [
+                {
+                  'task': task,
+                  'complete': false,
+                },
+                ...checklistData
+              ]
+            }, SetOptions(merge: true));
+          } else {
+            _firestore.collection("usersCollection").add({
+              "uid": user.uid,
+              "checklist": [
+                {'task': task, 'complete': false}
+              ]
+            });
+          }
+        });
+      }
+    } catch (err) {
+      return;
+    }
+  }
+
   // REMOVE APPOINTMENTS
   Future<void> removeUserAppointments({
     required String date,
@@ -152,6 +206,44 @@ class FirebaseRepository {
 
             _firestore.collection("usersCollection").doc(document.id).update({
               "appointments": appointmentsData,
+            });
+          }
+        });
+      }
+    } catch (err) {
+      return;
+    }
+  }
+
+  // UPDATE OR REMOVE APPOINTMENTS
+  Future<void> updateOrRemoveChecklistItem(
+      {required String task, required bool? update}) async {
+    try {
+      final _auth = FirebaseAuth.instance;
+      final _firestore = FirebaseFirestore.instance;
+      final user = _auth.currentUser;
+      if (user != null) {
+        await _firestore
+            .collection("usersCollection")
+            .where("uid", isEqualTo: user.uid)
+            .get()
+            .then((event) {
+          if (event.docs.isNotEmpty) {
+            var document = event.docs.single;
+            Map<String, dynamic> documentData = document.data();
+            List checklistData = documentData['checklist'] ?? [];
+
+            if (update != null) {
+              var index = checklistData.indexWhere((obj) => obj['task'] == task);
+              checklistData[index]['complete'] = checklistData[index]['complete'] ? false : true;
+            } else {
+              checklistData.removeWhere((obj) {
+                return obj['task'] == task;
+              });
+            }
+
+            _firestore.collection("usersCollection").doc(document.id).update({
+              "checklist": [...checklistData],
             });
           }
         });

@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<Widget> returnAllListItems(
+  List<Widget> returnAllScheduleItems(
     ThemeDataCubitState themeState,
     FirebaseBlocState firebaseState,
   ) {
@@ -84,16 +84,112 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  submitAppointment({
+  List<Widget> returnAllChecklistItems(
+    ThemeDataCubitState themeState,
+    FirebaseBlocState firebaseState,
+  ) {
+    return firebaseState.maybeMap(
+      complete: (completeState) {
+        List<Widget> items = [
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            height: 1.5,
+            decoration: BoxDecoration(
+              color: themeState.map(
+                lightMode: (_) => primaryColor,
+                darkMode: (_) => Colors.white,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+        ];
+
+        for (var item in completeState.checklistItems) {
+          items.add(
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 20.0,
+                left: 15,
+                right: 15,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      item!.task,
+                      style: const TextStyle(
+                        fontSize: 23,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => updateOrRemoveChecklistItem(item.task, true),
+                        child: Icon(
+                          item.complete
+                              ? CupertinoIcons.check_mark_circled
+                              : CupertinoIcons.circle,
+                          size: 30,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () => updateOrRemoveChecklistItem(item.task, null),
+                        child: const Icon(
+                          CupertinoIcons.clear_circled,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return items;
+      },
+      orElse: () {
+        return [
+          const SizedBox(
+            height: 5,
+            width: 5,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        ];
+      },
+    );
+  }
+
+  submitAppointmentOrChecklistItem({
     required String time,
     required String text,
   }) {
     final blankInput = RegExp(r'^$');
     if (!blankInput.hasMatch(text) && text.isNotEmpty) {
       showNotePad
-          ? null
+          ? BlocProvider.of<FirebaseBloc>(context).add(
+              FirebaseBlocEvent.setChecklistItem(
+                task: text,
+                date: dateCode,
+              ),
+            )
           : BlocProvider.of<FirebaseBloc>(context).add(
-              FirebaseBlocEvent.setUserData(
+              FirebaseBlocEvent.setAppointment(
                 date: dateCode,
                 time: time,
                 data: text,
@@ -106,9 +202,22 @@ class _HomeScreenState extends State<HomeScreen> {
     String time,
   ) {
     BlocProvider.of<FirebaseBloc>(context).add(
-      FirebaseBlocEvent.removeUserData(
+      FirebaseBlocEvent.removeAppointment(
         date: dateCode,
         time: time,
+      ),
+    );
+  }
+
+  updateOrRemoveChecklistItem(
+    String task,
+    bool? update,
+  ) {
+    BlocProvider.of<FirebaseBloc>(context).add(
+      FirebaseBlocEvent.updateOrRemoveChecklistItem(
+        date: dateCode,
+        task: task,
+        update: update
       ),
     );
   }
@@ -148,12 +257,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   lightMode: (_) => InputWidget(
                     darkmode: false,
                     notepadActive: showNotePad,
-                    onSubmit: submitAppointment,
+                    onSubmit: submitAppointmentOrChecklistItem,
                   ),
                   darkMode: (_) => InputWidget(
                     darkmode: true,
                     notepadActive: showNotePad,
-                    onSubmit: submitAppointment,
+                    onSubmit: submitAppointmentOrChecklistItem,
                   ),
                 ),
               ),
@@ -163,7 +272,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () async =>
                       showNotePad ? null : await selectDate(context),
                   child: Text(
-                    showNotePad ? 'Check-List' : '${months[dateTime.month - 1]} ${weekdays[dateTime.weekday - 1]} ${dateTime.day}',
+                    showNotePad
+                        ? 'Check-List'
+                        : '${months[dateTime.month - 1]} ${weekdays[dateTime.weekday - 1]} ${dateTime.day}',
                     style: TextStyle(
                       fontFamily: 'Now-Light',
                       fontSize: 35,
@@ -177,10 +288,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: BlocBuilder<FirebaseBloc, FirebaseBlocState>(
                     builder: (context, firebaseState) {
                   return showNotePad
-                      ? Container()
+                      ? ListView(
+                          children: returnAllChecklistItems(
+                              themeState, firebaseState),
+                        )
                       : ListView(
                           children:
-                              returnAllListItems(themeState, firebaseState),
+                              returnAllScheduleItems(themeState, firebaseState),
                         );
                 }),
               ),
@@ -188,8 +302,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         floatingActionButton: SizedBox(
-          height: 75,
-          width: 75,
+          height: 65,
+          width: 65,
           child: FittedBox(
             child: FloatingActionButton(
               onPressed: () => setState(() {

@@ -27,7 +27,7 @@ class ListItem extends StatelessWidget {
             child: Text(
               appointment!,
               style: const TextStyle(
-                fontSize: 17.5,
+                fontSize: 20,
               ),
             ),
           ),
@@ -49,7 +49,7 @@ class ListItem extends StatelessWidget {
               onTap: () => onRemove(time),
               child: Icon(
                 CupertinoIcons.minus_circle_fill,
-                size: 40,
+                size: 35,
                 color: themeState.map(
                   lightMode: (_) => primaryColor,
                   darkMode: (_) => Colors.white,
