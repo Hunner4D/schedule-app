@@ -5,6 +5,7 @@ import 'package:schedule_app/presentation/constants/colors.dart';
 
 class InputWidget extends StatefulWidget {
   final bool darkmode;
+  final bool notepadActive;
   final Function({
     required String text,
     required String time,
@@ -13,6 +14,7 @@ class InputWidget extends StatefulWidget {
   const InputWidget({
     Key? key,
     required this.darkmode,
+    required this.notepadActive,
     required this.onSubmit,
   }) : super(key: key);
 
@@ -79,33 +81,41 @@ class _InputWidgetState extends State<InputWidget> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  PopupMenuButton(
-                    itemBuilder: (context) => returnDropdownListItems(),
-                    onSelected: (String? newValue) => setState(() {
-                      dropdownValue = newValue!;
-                    }),
-                    iconSize: 10,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          dropdownValue,
-                          style: const TextStyle(
-                            color: Colors.white,
+                  widget.notepadActive
+                      ? Container()
+                      : PopupMenuButton(
+                          itemBuilder: (context) => returnDropdownListItems(),
+                          onSelected: (String? newValue) => setState(() {
+                            dropdownValue = newValue!;
+                          }),
+                          iconSize: 10,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                dropdownValue,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
                   GestureDetector(
-                    onTap: () => widget.onSubmit(
-                      time: dropdownValue,
-                      text: textValue,
-                    ),
+                    onTap: () {
+                      widget.onSubmit(
+                        time: dropdownValue,
+                        text: textValue,
+                      );
+
+                      setState(() {
+                        textValue = '';
+                      });
+                    },
                     child: const Icon(
                       CupertinoIcons.add_circled_solid,
                       size: 40,

@@ -1,10 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:schedule_app/logic/models/appointment.dart';
+import 'package:schedule_app/logic/models/checklist_item.dart';
+
+enum ResponseType { appointments, checklistItems }
 
 class FirebaseRepository {
   // GET APPOINTMENTS
-  Future<List<Appointment?>> getUserAppointments({required String date}) async {
+  Future<Map<ResponseType, List>> getUserAppointments(
+      {required String date}) async {
+    Map<ResponseType, List> response = {
+      ResponseType.appointments: [],
+      ResponseType.checklistItems: [],
+    };
+
     try {
       final _auth = FirebaseAuth.instance;
       final _firestore = FirebaseFirestore.instance;
@@ -18,8 +27,11 @@ class FirebaseRepository {
           if (event.docs.isNotEmpty) {
             var document = event.docs.single;
             Map<String, dynamic> documentData = document.data();
-            Map<String, dynamic> appointmentsData = documentData['appointments'] ?? {};
-            Map<String, dynamic> dateData = appointmentsData[date] != null ? appointmentsData[date] as Map<String, dynamic> : {};
+            Map<String, dynamic> appointmentsData =
+                documentData['appointments'] ?? {};
+            Map<String, dynamic> dateData = appointmentsData[date] != null
+                ? appointmentsData[date] as Map<String, dynamic>
+                : {};
 
             List<Appointment?> appointments = [];
             for (var element in dateData.keys) {
@@ -31,20 +43,29 @@ class FirebaseRepository {
               );
             }
 
-            return appointments;
+            List checklistData = documentData['checklist'] ?? [];
+
+            List<ChecklistItem?> checklist = [];
+            for (var element in checklistData) {
+              checklist.add(
+                ChecklistItem(
+                  task: element['task'],
+                  complete: element['complete'],
+                ),
+              );
+            }
+
+            response[ResponseType.appointments] = appointments;
+            response[ResponseType.checklistItems] = checklist;
+
+            return response;
           } else {
-            List<Appointment?> appointments = [];
-            return appointments;
+            return response;
           }
-        }).catchError((err) {
-          print(err);
-          List<Appointment?> appointments = [];
-          return appointments;
-        });
+        }).catchError((err) => response);
       }
     } catch (e) {
-      List<Appointment?> appointments = [];
-      return appointments;
+      return response;
     }
     throw Error();
   }
@@ -68,16 +89,22 @@ class FirebaseRepository {
           if (event.docs.isNotEmpty) {
             var document = event.docs.single;
             Map<String, dynamic> documentData = document.data();
-            Map<String, dynamic> appointmentsData = documentData['appointments'] ?? {};
-            Map<String, dynamic> dateData = appointmentsData[date] != null ? appointmentsData[date] as Map<String, dynamic> : {};
-            
+            Map<String, dynamic> appointmentsData =
+                documentData['appointments'] ?? {};
+            Map<String, dynamic> dateData = appointmentsData[date] != null
+                ? appointmentsData[date] as Map<String, dynamic>
+                : {};
+
             List<String> previousData = [];
             if (dateData.keys.contains(time)) {
               previousData = List.from(dateData[time]!);
               _firestore.collection("usersCollection").doc(document.id).set({
                 "appointments": {
                   date: {
-                    time: [data, ...previousData]
+                    time: [
+                      ...previousData,
+                      data,
+                    ]
                   }
                 }
               }, SetOptions(merge: true));
@@ -103,7 +130,49 @@ class FirebaseRepository {
         });
       }
     } catch (err) {
-      print(err);
+      return;
+    }
+  }
+
+  // SET CHECKLIST ITEM
+  Future<void> setChecklistItem({
+    required String task,
+  }) async {
+    try {
+      final _auth = FirebaseAuth.instance;
+      final _firestore = FirebaseFirestore.instance;
+      final user = _auth.currentUser;
+      if (user != null) {
+        await _firestore
+            .collection("usersCollection")
+            .where("uid", isEqualTo: user.uid)
+            .get()
+            .then((event) {
+          if (event.docs.isNotEmpty) {
+            var document = event.docs.single;
+            Map<String, dynamic> documentData = document.data();
+            List checklistData = documentData['checklist'] ?? [];
+
+            _firestore.collection("usersCollection").doc(document.id).set({
+              "checklist": [
+                {
+                  'task': task,
+                  'complete': false,
+                },
+                ...checklistData
+              ]
+            }, SetOptions(merge: true));
+          } else {
+            _firestore.collection("usersCollection").add({
+              "uid": user.uid,
+              "checklist": [
+                {'task': task, 'complete': false}
+              ]
+            });
+          }
+        });
+      }
+    } catch (err) {
       return;
     }
   }
@@ -126,8 +195,11 @@ class FirebaseRepository {
           if (event.docs.isNotEmpty) {
             var document = event.docs.single;
             Map<String, dynamic> documentData = document.data();
-            Map<String, dynamic> appointmentsData = documentData['appointments'] ?? {};
-            Map<String, dynamic> dateData = appointmentsData[date] != null ? appointmentsData[date] as Map<String, dynamic> : {};
+            Map<String, dynamic> appointmentsData =
+                documentData['appointments'] ?? {};
+            Map<String, dynamic> dateData = appointmentsData[date] != null
+                ? appointmentsData[date] as Map<String, dynamic>
+                : {};
 
             dateData.remove(time);
             appointmentsData.update(date, (value) => dateData);
@@ -139,7 +211,44 @@ class FirebaseRepository {
         });
       }
     } catch (err) {
-      print(err);
+      return;
+    }
+  }
+
+  // UPDATE OR REMOVE APPOINTMENTS
+  Future<void> updateOrRemoveChecklistItem(
+      {required String task, required bool? update}) async {
+    try {
+      final _auth = FirebaseAuth.instance;
+      final _firestore = FirebaseFirestore.instance;
+      final user = _auth.currentUser;
+      if (user != null) {
+        await _firestore
+            .collection("usersCollection")
+            .where("uid", isEqualTo: user.uid)
+            .get()
+            .then((event) {
+          if (event.docs.isNotEmpty) {
+            var document = event.docs.single;
+            Map<String, dynamic> documentData = document.data();
+            List checklistData = documentData['checklist'] ?? [];
+
+            if (update != null) {
+              var index = checklistData.indexWhere((obj) => obj['task'] == task);
+              checklistData[index]['complete'] = checklistData[index]['complete'] ? false : true;
+            } else {
+              checklistData.removeWhere((obj) {
+                return obj['task'] == task;
+              });
+            }
+
+            _firestore.collection("usersCollection").doc(document.id).update({
+              "checklist": [...checklistData],
+            });
+          }
+        });
+      }
+    } catch (err) {
       return;
     }
   }

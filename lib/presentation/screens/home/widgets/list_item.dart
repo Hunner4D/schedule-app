@@ -24,7 +24,12 @@ class ListItem extends StatelessWidget {
       data?.forEach((appointment) {
         appointments.add(
           Center(
-            child: Text(appointment!),
+            child: Text(
+              appointment!,
+              style: const TextStyle(
+                fontSize: 20,
+              ),
+            ),
           ),
         );
       });
@@ -33,15 +38,18 @@ class ListItem extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: ListView(
-                children: appointments,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: ListView(
+                  children: appointments,
+                ),
               ),
             ),
             GestureDetector(
               onTap: () => onRemove(time),
               child: Icon(
                 CupertinoIcons.minus_circle_fill,
-                size: 40,
+                size: 35,
                 color: themeState.map(
                   lightMode: (_) => primaryColor,
                   darkMode: (_) => Colors.white,
