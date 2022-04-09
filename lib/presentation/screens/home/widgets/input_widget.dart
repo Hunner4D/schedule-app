@@ -106,10 +106,16 @@ class _InputWidgetState extends State<InputWidget> {
                           ),
                         ),
                   GestureDetector(
-                    onTap: () => widget.onSubmit(
-                      time: dropdownValue,
-                      text: textValue,
-                    ),
+                    onTap: () {
+                      widget.onSubmit(
+                        time: dropdownValue,
+                        text: textValue,
+                      );
+
+                      setState(() {
+                        textValue = '';
+                      });
+                    },
                     child: const Icon(
                       CupertinoIcons.add_circled_solid,
                       size: 40,
